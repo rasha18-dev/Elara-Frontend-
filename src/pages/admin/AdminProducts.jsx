@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
@@ -19,13 +21,14 @@ export default function AdminProducts() {
       const res = await axios.get("http://localhost:5000/api/products");
       setProducts(res.data);
     } catch (error) {
-      alert(error.response?.data?.message || "Failed to fetch products");
+      toast.error(error.response?.data?.message || "Failed to fetch products ❌");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
+    toast.success("Stock updated ✅");
     fetchProducts();
   }, []);
 
@@ -44,7 +47,7 @@ export default function AdminProducts() {
 
       fetchProducts();
     } catch (error) {
-      alert(error.response?.data?.message || "Stock update failed");
+     toast.error(error.response?.data?.message || "Stock update failed ❌");
     }
   };
 
@@ -63,10 +66,11 @@ export default function AdminProducts() {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      alert("Deleted ✅");
+      toast.success("Product deleted ✅");
+
       fetchProducts();
     } catch (error) {
-      alert(error.response?.data?.message || "Delete failed");
+       toast.error(error.response?.data?.message || "Delete failed ❌");
     } finally {
       setLoading(false);
     }

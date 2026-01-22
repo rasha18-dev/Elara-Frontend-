@@ -24,6 +24,7 @@ export default function AdminEditProduct() {
     "Bangles",
     "Anklets",
     "Wedding Rings",
+    "Necklace",
     "Others",
   ];
 

@@ -7,7 +7,7 @@ export default function FeaturedProducts() {
       image: "/wedfeat.jpg",
       title: "Wedding ",
       desc: "Premium wedding rings crafted for forever moments.",
-      link: "/products?category=Wedding%20Rings",
+      link: "/products?category=Bridal",
       tag: "Best Seller",
     },
     {

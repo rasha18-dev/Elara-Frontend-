@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 
 /* ✅ FILTER UI OUTSIDE (fix focus / typing issue) */
 function FilterUI({
@@ -20,11 +21,12 @@ function FilterUI({
   setOpenFilter,
 }) {
   return (
-    <div
-      className={`bg-white/90 backdrop-blur rounded-3xl shadow-sm border border-antiqueGold/15 p-6 ${
-        isMobile ? "" : "sticky top-20 h-fit"
-      }`}
-    >
+   <div
+  className={`bg-white/90 backdrop-blur rounded-3xl shadow-sm border border-antiqueGold/15 p-6 ${
+    isMobile ? "" : "sticky top-20 max-h-[calc(100vh-6rem)] overflow-hidden"
+  }`}
+>
+
       <div className="flex items-center justify-between mb-5">
         <h3 className="font-bold text-mocha text-lg">Filters</h3>
 
@@ -89,8 +91,10 @@ function FilterUI({
       <div>
         <p className="font-semibold text-mocha mb-3 text-sm">Category</p>
 
-        <div className="space-y-2">
-          {categories.map((cat) => (
+        <div className="space-y-2 max-h-80 overflow-y-auto
+ pr-1">
+  {categories.map((cat) => (
+
             <button
               key={cat}
               type="button"
@@ -185,7 +189,7 @@ export default function ProductsPage() {
     "Necklace",
   ];
 
-  // ✅ Sync category with URL (DON'T RESET to All always)
+  // ✅ Sync category with URL
   useEffect(() => {
     if (categoryFromURL && categories.includes(categoryFromURL)) {
       setCategory(categoryFromURL);
@@ -207,8 +211,12 @@ export default function ProductsPage() {
     const fetchProducts = async () => {
       try {
         setLoading(true);
+
         const { data } = await axios.get("http://localhost:5000/api/products");
+
+        // console.log("All product categories:", data.map((p) => p.category)); // ✅ fixed
         setProducts(data);
+        toast.success("Products loaded ✅");
       } catch (error) {
         console.log(
           "FETCH PRODUCTS ERROR:",
@@ -232,14 +240,20 @@ export default function ProductsPage() {
     setMaxPrice("");
   };
 
-  // ✅ Filter + Sort (FULL SEARCH FIX)
+  // ✅ Filter + Sort
   const filteredProducts = useMemo(() => {
     let list = [...products];
 
-    // category filter
-    if (category !== "All") list = list.filter((p) => p.category === category);
+    // ✅ category filter (handles extra spaces + case mismatch)
+    if (category !== "All") {
+      list = list.filter(
+        (p) =>
+          (p.category || "").trim().toLowerCase() ===
+          category.trim().toLowerCase()
+      );
+    }
 
-    // ✅ Search filter (works for name/title/productName)
+    // ✅ Search filter
     if (debouncedSearch.trim()) {
       const keyword = debouncedSearch.toLowerCase();
 
@@ -256,7 +270,7 @@ export default function ProductsPage() {
       });
     }
 
-    // price range filter
+    // ✅ price range filter
     const min = Number(minPrice);
     const max = Number(maxPrice);
 
@@ -267,7 +281,7 @@ export default function ProductsPage() {
       list = list.filter((p) => Number(p.price) <= max);
     }
 
-    // sorting
+    // ✅ sorting
     if (sort === "low") list.sort((a, b) => a.price - b.price);
     if (sort === "high") list.sort((a, b) => b.price - a.price);
     if (sort === "new") {
@@ -288,7 +302,6 @@ export default function ProductsPage() {
             {category !== "All" ? `${category} Collection` : "All Jewellery"}
           </h1>
 
-          {/* ✅ When category selected from URL show back */}
           {category !== "All" && (
             <Link
               to="/products"
@@ -344,7 +357,6 @@ export default function ProductsPage() {
                   to={`/product/${p._id}`}
                   className="group bg-white rounded-[32px] shadow-md hover:shadow-xl transition overflow-hidden border border-antiqueGold/10"
                 >
-                  {/* ✅ BIG IMAGE */}
                   <div className="relative overflow-hidden">
                     <img
                       src={p.image}
@@ -367,7 +379,6 @@ export default function ProductsPage() {
                     </div>
                   </div>
 
-                  {/* Content */}
                   <div className="p-5">
                     <p className="text-xs font-semibold text-antiqueGold">
                       {p.category || "Jewellery"}
