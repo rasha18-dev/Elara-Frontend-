@@ -2,13 +2,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
 export default function CartPage() {
-  const navigate = useNavigate(); // ✅ FIXED
+  const navigate = useNavigate();
 
   const { cartItems, removeFromCart, updateQty } = useCart();
 
   const total = cartItems.reduce((sum, item) => sum + item.price * item.qty, 0);
 
-  
   return (
     <div className="max-w-6xl mx-auto px-4 py-10">
       <h1 className="text-2xl font-semibold mb-6">Your Cart</h1>
@@ -41,18 +40,34 @@ export default function CartPage() {
                   <p className="text-gray-600">₹ {item.price}</p>
                 </div>
 
-                {/* ✅ QTY */}
-                <select
-                  value={item.qty}
-                  onChange={(e) => updateQty(item._id, e.target.value)}
-                  className="border rounded-xl px-3 py-2"
-                >
-                  {[...Array(10).keys()].map((x) => (
-                    <option key={x + 1} value={x + 1}>
-                      {x + 1}
-                    </option>
-                  ))}
-                </select>
+                {/* ✅ QTY (- / +) */}
+                <div className="flex items-center gap-2">
+                  <button
+                    type="button"
+                    onClick={() =>
+                      updateQty(item._id, Math.max(Number(item.qty) - 1, 1))
+                    }
+                    disabled={Number(item.qty) <= 1}
+                    className="w-10 h-10 rounded-xl border font-bold disabled:opacity-50"
+                  >
+                    -
+                  </button>
+
+                  <span className="min-w-[40px] text-center font-semibold">
+                    {item.qty}
+                  </span>
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      updateQty(item._id, Math.min(Number(item.qty) + 1, 10))
+                    }
+                    disabled={Number(item.qty) >= 10}
+                    className="w-10 h-10 rounded-xl border font-bold disabled:opacity-50"
+                  >
+                    +
+                  </button>
+                </div>
 
                 {/* ✅ REMOVE */}
                 <button
@@ -70,7 +85,7 @@ export default function CartPage() {
             <h2 className="text-xl font-semibold">Total: ₹ {total}</h2>
 
             <button
-              onClick={() => navigate("/checkout")} // ✅ FIXED
+              onClick={() => navigate("/checkout")}
               className="mt-4 w-full bg-black text-white py-3 rounded-full font-semibold"
             >
               Checkout

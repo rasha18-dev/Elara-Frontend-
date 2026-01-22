@@ -23,9 +23,10 @@ function FilterUI({
   return (
    <div
   className={`bg-white/90 backdrop-blur rounded-3xl shadow-sm border border-antiqueGold/15 p-6 ${
-    isMobile ? "" : "sticky top-20 max-h-[calc(100vh-6rem)] overflow-hidden"
+    isMobile ? "" : "sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto"
   }`}
 >
+
 
       <div className="flex items-center justify-between mb-5">
         <h3 className="font-bold text-mocha text-lg">Filters</h3>
@@ -91,8 +92,8 @@ function FilterUI({
       <div>
         <p className="font-semibold text-mocha mb-3 text-sm">Category</p>
 
-        <div className="space-y-2 max-h-80 overflow-y-auto
- pr-1">
+        <div className="space-y-2 max-h-[40vh] overflow-y-auto pr-1">
+
   {categories.map((cat) => (
 
             <button
@@ -216,7 +217,7 @@ export default function ProductsPage() {
 
         // console.log("All product categories:", data.map((p) => p.category)); // ✅ fixed
         setProducts(data);
-        toast.success("Products loaded ✅");
+        // toast.success("Products loaded ✅");
       } catch (error) {
         console.log(
           "FETCH PRODUCTS ERROR:",
