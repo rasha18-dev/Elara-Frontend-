@@ -4,14 +4,14 @@ import App from "./App.jsx";
 import "./index.css";
 
 import { CartProvider } from "./context/CartContext.jsx";
-import { FavouriteProvider } from "./context/FavouriteContext.jsx";
+import { FavProvider } from "./context/FavouriteContext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <CartProvider>
-      <FavouriteProvider>
+     <FavProvider>
         <App />
-      </FavouriteProvider>
+      </FavProvider>
     </CartProvider>
   </React.StrictMode>
 );

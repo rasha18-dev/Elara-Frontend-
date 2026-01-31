@@ -1,7 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useCart } from "../context/CartContext";
+
 import { toast } from "react-toastify";
+import { Heart } from "lucide-react";
+import { useFav } from "../context/FavouriteContext";
+
 
 /* ✅ FILTER UI OUTSIDE (fix focus / typing issue) */
 function FilterUI({
@@ -157,8 +162,13 @@ function SkeletonGrid() {
 }
 
 export default function ProductsPage() {
+  const navigate = useNavigate();
+const { addToCart } = useCart();
+
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { addToFav, isFav } = useFav();
+ 
 
   // ✅ Filters
   const [search, setSearch] = useState("");
@@ -214,8 +224,9 @@ export default function ProductsPage() {
         setLoading(true);
 
         const { data } = await axios.get("http://localhost:5000/api/products");
+       
 
-        // console.log("All product categories:", data.map((p) => p.category)); // ✅ fixed
+       
         setProducts(data);
         // toast.success("Products loaded ✅");
       } catch (error) {
@@ -230,6 +241,32 @@ export default function ProductsPage() {
 
     fetchProducts();
   }, []);
+
+    const handleAddToCart = async (product) => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+  if (!userInfo?.token) {
+    localStorage.setItem("pendingCart", JSON.stringify(product));
+    localStorage.setItem("redirectAfterLogin", "/products");
+    navigate("/login");
+    return;
+  }
+
+  await axios.post(
+    "http://localhost:5000/api/cart",
+    {
+      productId: product._id,
+      qty: 1,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    }
+  );
+
+  toast.success("Added to cart 🛒");
+};
 
   // ✅ Reset filters
   const resetFilters = () => {
@@ -353,12 +390,41 @@ export default function ProductsPage() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
               {filteredProducts.map((p) => (
-                <Link
-                  key={p._id}
-                  to={`/product/${p._id}`}
-                  className="group bg-white rounded-[32px] shadow-md hover:shadow-xl transition overflow-hidden border border-antiqueGold/10"
-                >
+               <div
+  key={p._id}
+  className="group bg-white rounded-[32px] ..."
+>
+
                   <div className="relative overflow-hidden">
+                    <button
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+    if (!userInfo?.token) {
+      toast.warning("Please login to add favourites ❤️");
+      navigate("/login");
+      return;
+    }
+
+    addToFav(p);
+    toast.success("Added to favourites ❤️");
+  }}
+  type="button"
+  className="absolute top-4 right-4 z-20 bg-white p-2 rounded-full shadow hover:scale-110 transition"
+>
+  <Heart
+    size={20}
+    className={
+      isFav(p._id)
+        ? "fill-red-500 text-red-500"
+        : "text-gray-600"
+    }
+  />
+</button>
+
                     <img
                       src={p.image}
                       alt={p.name || p.title || "Product"}
@@ -374,10 +440,15 @@ export default function ProductsPage() {
                     <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition" />
 
                     <div className="absolute bottom-5 left-0 right-0 flex justify-center opacity-0 group-hover:opacity-100 transition">
-                      <span className="px-5 py-2.5 rounded-full bg-white text-black text-sm font-semibold shadow">
-                        View Product →
-                      </span>
-                    </div>
+  <button
+    onClick={() => navigate(`/products/${p._id}`)}
+    className="px-5 py-2.5 rounded-full bg-white text-black text-sm font-semibold shadow"
+  >
+    View Details →
+  </button>
+</div>
+
+
                   </div>
 
                   <div className="p-5">
@@ -392,6 +463,10 @@ export default function ProductsPage() {
                     <p className="text-base font-bold text-mocha mt-2">
                       ₹ {p.price}
                     </p>
+   
+                    <p className="text-sm text-gray-600 mt-1">
+  Weight: {p.weight}
+</p>
 
                     <p
                       className={`text-xs font-semibold mt-2 ${
@@ -405,7 +480,7 @@ export default function ProductsPage() {
                         : "In Stock"}
                     </p>
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
           )}

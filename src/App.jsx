@@ -44,7 +44,7 @@ export default function App() {
           {/* ✅ PUBLIC ROUTES */}
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<ProductsPage />} />
-          <Route path="/product/:id" element={<ProductDetails />} />
+          <Route path="/products/:id" element={<ProductDetails />} />
           <Route path="/customization" element={<CustomizationPage />} />
 
           <Route path="/login" element={<Login />} />

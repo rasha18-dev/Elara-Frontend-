@@ -1,40 +1,23 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 const FavContext = createContext();
 
-export const FavouriteProvider = ({ children }) => {
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const userId = userInfo?._id || "guest";
-
-  const FAV_KEY = `fav_${userId}`;
-
-  const [favItems, setFavItems] = useState(() => {
-    return JSON.parse(localStorage.getItem(FAV_KEY)) || [];
-  });
-
-  useEffect(() => {
-    localStorage.setItem(FAV_KEY, JSON.stringify(favItems));
-  }, [favItems, FAV_KEY]);
+export const FavProvider = ({ children }) => {
+  const [favs, setFavs] = useState([]);
 
   const addToFav = (product) => {
-    setFavItems((prev) => {
-      if (prev.find((x) => x._id === product._id)) return prev;
+    setFavs((prev) => {
+      if (prev.find((p) => p._id === product._id)) return prev;
       return [...prev, product];
     });
   };
 
-  const removeFromFav = (id) => {
-    setFavItems((prev) => prev.filter((x) => x._id !== id));
+  const isFav = (id) => {
+    return favs.some((p) => p._id === id);
   };
 
-  const isFav = (id) => favItems.some((x) => x._id === id);
-
-  const clearFav = () => setFavItems([]);
-
   return (
-    <FavContext.Provider
-      value={{ favItems, addToFav, removeFromFav, isFav, clearFav }}
-    >
+    <FavContext.Provider value={{ favs, addToFav, isFav }}>
       {children}
     </FavContext.Provider>
   );

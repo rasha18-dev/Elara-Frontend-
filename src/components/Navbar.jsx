@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Heart, ShoppingCart, UserCircle2, LogOut } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
+import { useFav } from "../context/FavouriteContext";
+
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -13,8 +15,12 @@ export default function Navbar() {
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const navigate = useNavigate();
-  const { cartItems } = useCart();
-  const cartCount = cartItems.length;
+ const { cartItems = [] } = useCart();
+const cartCount = cartItems?.length || 0;
+
+ const { favs = [] } = useFav();
+const favCount = favs.length;
+
 
   // ✅ SAFE localStorage parsing
   const userInfo = localStorage.getItem("userInfo")
@@ -22,23 +28,38 @@ export default function Navbar() {
     : null;
 
   const token = userInfo?.token;
-  const isAdmin = userInfo?.user?.isAdmin;
+  // ✅ Check isAdmin from multiple possible locations
+  const isAdmin = userInfo?.user?.isAdmin || userInfo?.isAdmin || false;
 
-  // ✅ LOGOUT ACTION
+  // ✅ Debug: Log admin status (remove later if needed)
+  useEffect(() => {
+    if (token) {
+      console.log("🔐 User Info:", userInfo);
+      console.log("👤 Is Admin:", isAdmin);
+    }
+  }, [token, isAdmin]);
+
   const confirmLogout = () => {
-    localStorage.removeItem("userInfo");
-    setShowLogoutModal(false);
-    navigate("/login");
-  };
+  localStorage.removeItem("userInfo");
+
+  // DON'T touch cart here
+
+  setShowLogoutModal(false);
+  navigate("/login");
+  window.location.reload(); // 👈 add this line
+};
+
 
   // ✅ FAVOURITE CLICK ACTION
-  const handleFavouriteClick = () => {
-    if (!token) {
-      setShowLoginModal(true);
-      return;
-    }
-    setShowFavModal(true);
-  };
+ const handleFavouriteClick = () => {
+  if (!token) {
+    setShowLoginModal(true);
+    return;
+  }
+
+  navigate("/favourites");
+};
+
 
   // ✅ LOGIN REDIRECT ACTION
   const goToLogin = () => {
@@ -99,8 +120,10 @@ export default function Navbar() {
 
             {/* ✅ ADMIN LINK */}
             {isAdmin && (
-              <li className="hover:text-antiqueGold cursor-pointer font-semibold">
-                <Link to="/admin/dashboard">Admin</Link>
+              <li className="hover:text-antiqueGold cursor-pointer font-semibold bg-antiqueGold/10 px-3 py-1 rounded-full">
+                <Link to="/admin" className="flex items-center gap-1">
+                  🛡️ Admin
+                </Link>
               </li>
             )}
           </ul>
@@ -109,22 +132,39 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-6 text-softBrown">
             {/* ❤️ Favourite */}
             <button
-              onClick={handleFavouriteClick}
-              className="cursor-pointer hover:text-antiqueGold transition"
-              title="Favourites"
-            >
+  onClick={handleFavouriteClick}
+  className="relative cursor-pointer hover:text-antiqueGold transition"
+  title="Favourites"
+>
+
               <Heart />
+              {favCount > 0 && (
+    <span className="absolute -top-2 -right-2 bg-antiqueGold text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+      {favCount}
+    </span>
+  )}
             </button>
 
             {/* CART */}
-            <Link to="/cart" className="relative cursor-pointer">
-              <ShoppingCart className="hover:text-antiqueGold transition" />
-              {cartCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-antiqueGold text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                  {cartCount}
-                </span>
-              )}
-            </Link>
+            
+<button
+  onClick={() => {
+    if (!token) {
+      localStorage.setItem("redirectAfterLogin", "/cart");
+      navigate("/login");
+    } else {
+      navigate("/cart");
+    }
+  }}
+  className="relative cursor-pointer"
+>
+  <ShoppingCart className="hover:text-antiqueGold transition" />
+  {cartCount > 0 && (
+    <span className="absolute -top-2 -right-2 bg-antiqueGold text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+      {cartCount}
+    </span>
+  )}
+</button>
 
             {/* ✅ LOGIN OR PROFILE + LOGOUT */}
             {!token ? (
@@ -214,9 +254,9 @@ export default function Navbar() {
 
             {/* ✅ ADMIN LINK (Mobile) */}
             {isAdmin && (
-              <li className="font-semibold">
-                <Link to="/admin/dashboard" onClick={() => setOpen(false)}>
-                  Admin
+              <li className="font-semibold bg-antiqueGold/10 px-3 py-2 rounded-lg">
+                <Link to="/admin" onClick={() => setOpen(false)} className="flex items-center gap-2">
+                  🛡️ Admin Dashboard
                 </Link>
               </li>
             )}
@@ -265,30 +305,34 @@ export default function Navbar() {
             {/* ✅ Mobile Icons (Fav + Cart) */}
             <div className="flex items-center gap-10 pt-2 text-softBrown">
               {/* ❤️ Favourite */}
-              <button
-                onClick={() => {
-                  handleFavouriteClick();
-                  setOpen(false);
-                }}
-                className="hover:text-antiqueGold transition"
-                title="Favourites"
-              >
-                <Heart />
-              </button>
+            <button
+  onClick={() => { handleFavouriteClick(); setOpen(false); }}
+  className="relative hover:text-antiqueGold transition"
+  title="Favourites"
+>
+</button>
+             {/* 🛒 Cart */}
+<button
+  onClick={() => {
+    setOpen(false);
 
-              {/* 🛒 Cart */}
-              <Link
-                to="/cart"
-                onClick={() => setOpen(false)}
-                className="relative"
-              >
-                <ShoppingCart className="hover:text-antiqueGold transition" />
-                {cartCount > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-antiqueGold text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                    {cartCount}
-                  </span>
-                )}
-              </Link>
+    if (!token) {
+      localStorage.setItem("redirectAfterLogin", "/cart");
+      navigate("/login");
+    } else {
+      navigate("/cart");
+    }
+  }}
+  className="relative"
+>
+  <ShoppingCart className="hover:text-antiqueGold transition" />
+  {cartCount > 0 && (
+    <span className="absolute -top-2 -right-2 bg-antiqueGold text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+      {cartCount}
+    </span>
+  )}
+</button>
+
             </div>
           </ul>
         </div>
@@ -350,40 +394,7 @@ export default function Navbar() {
         </div>
       )}
 
-      {/* ✅ FAVOURITES MODAL */}
-      {showFavModal && (
-        <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/50 px-4">
-          <div className="w-full max-w-md rounded-2xl bg-ivory p-6 shadow-xl border border-antiqueGold/40">
-            <h2 className="text-lg font-semibold text-mocha">Your Favourites ❤️</h2>
-            <p className="text-sm text-softBrown mt-2">
-              You can view all favourite products here.
-            </p>
-
-            <div className="mt-4 p-4 rounded-xl bg-champagne/40 text-sm text-mocha">
-              Click “View All” to see favourites list.
-            </div>
-
-            <div className="mt-6 flex gap-3 justify-end">
-              <button
-                onClick={() => setShowFavModal(false)}
-                className="px-4 py-2 rounded-xl border border-softBrown/30 text-mocha hover:bg-softBrown/10 transition"
-              >
-                Close
-              </button>
-
-              <button
-                onClick={() => {
-                  setShowFavModal(false);
-                  navigate("/favourites");
-                }}
-                className="px-4 py-2 rounded-xl bg-antiqueGold text-white hover:opacity-90 transition"
-              >
-                View All
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+     
     </>
   );
 }

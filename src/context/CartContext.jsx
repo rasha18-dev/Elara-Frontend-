@@ -1,22 +1,76 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import axios from "axios";
 
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  const userId = userInfo?._id || "guest";
+  const GUEST_KEY = "guestCart";
 
-  const CART_KEY = `cart_${userId}`;
-
+  // ✅ Load guest cart first
   const [cartItems, setCartItems] = useState(() => {
-    return JSON.parse(localStorage.getItem(CART_KEY)) || [];
+    const saved = localStorage.getItem(GUEST_KEY);
+    return saved ? JSON.parse(saved) : [];
   });
 
+  // ✅ Save guest cart when NOT logged in
   useEffect(() => {
-    localStorage.setItem(CART_KEY, JSON.stringify(cartItems));
-  }, [cartItems, CART_KEY]);
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
-  const addToCart = (product) => {
+    if (!userInfo?.token) {
+      localStorage.setItem(GUEST_KEY, JSON.stringify(cartItems));
+    }
+  }, [cartItems]);
+
+  // ✅ Load DB cart after login (on app start)
+  useEffect(() => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+    if (userInfo?.token) {
+      axios
+        .get("http://localhost:5000/api/cart", {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        })
+        .then((res) => {
+          setCartItems(res.data || []);
+          localStorage.removeItem(GUEST_KEY);
+        })
+        .catch(() => setCartItems([]));
+    }
+  }, []);
+
+  // ✅ Add to cart
+  const addToCart = async (product) => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+
+    // 🟢 Logged in → save to DB
+    if (userInfo?.token) {
+      await axios.post(
+        "http://localhost:5000/api/cart",
+        {
+          productId: product._id,
+          qty: 1,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+
+      // reload DB cart
+      const { data } = await axios.get("http://localhost:5000/api/cart", {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+
+      setCartItems(data || []);
+      return;
+    }
+
+    // 🟡 Guest user → local cart
     setCartItems((prev) => {
       const exist = prev.find((x) => x._id === product._id);
 
@@ -30,23 +84,13 @@ export const CartProvider = ({ children }) => {
     });
   };
 
+  // ✅ Remove from cart (frontend only for now)
   const removeFromCart = (id) => {
     setCartItems((prev) => prev.filter((x) => x._id !== id));
   };
 
-  // ✅ NEW: Update quantity
-  const updateQty = (id, qty) => {
-    setCartItems((prev) =>
-      prev.map((x) => (x._id === id ? { ...x, qty: Number(qty) } : x))
-    );
-  };
-
-  const clearCart = () => setCartItems([]);
-
   return (
-    <CartContext.Provider
-      value={{ cartItems, addToCart, removeFromCart, clearCart, updateQty }}
-    >
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart }}>
       {children}
     </CartContext.Provider>
   );

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function AdminAddProduct() {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ export default function AdminAddProduct() {
   // form states
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
+  const [weight, setWeight] = useState("");
   const [image, setImage] = useState(""); // ✅ cloudinary URL
   const [description, setDescription] = useState("");
   const [countInStock, setCountInStock] = useState(0);
@@ -63,7 +65,7 @@ export default function AdminAddProduct() {
       setImage(data.imageUrl); // ✅ Cloudinary URL
     } catch (error) {
       console.log("UPLOAD ERROR:", error?.response?.data || error.message);
-      alert(error?.response?.data?.message || "Image upload failed");
+      toast.error(error?.response?.data?.message || "Image upload failed");
     } finally {
       setUploading(false);
     }
@@ -73,7 +75,7 @@ export default function AdminAddProduct() {
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    if (!name || !price || !description || !image || !category) {
+    if (!name || !price || !weight || !description || !image || !category) {
       return alert("Please fill all fields + upload image ✅");
     }
 
@@ -85,6 +87,7 @@ export default function AdminAddProduct() {
         {
           name,
           price,
+          weight,
           description,
           image,
           category,
@@ -95,11 +98,11 @@ export default function AdminAddProduct() {
         }
       );
 
-      alert("Product created ✅");
+      toast.success("Product created ✅");
       navigate("/admin/products");
     } catch (error) {
       console.log("CREATE ERROR:", error?.response?.data || error.message);
-      alert(error?.response?.data?.message || "Product create failed");
+      toast.error(error?.response?.data?.message || "Product create failed");
     } finally {
       setLoading(false);
     }
@@ -132,6 +135,13 @@ export default function AdminAddProduct() {
             className="w-full border p-2 rounded-lg"
           />
         </div>
+<input
+  type="text"
+  placeholder="Weight (eg: 500g / 1kg)"
+  value={weight}
+  onChange={(e) => setWeight(e.target.value)}
+  className="w-full border rounded-xl px-4 py-2"
+/>
 
         {/* ✅ Category Dropdown (fixed) */}
         <div>

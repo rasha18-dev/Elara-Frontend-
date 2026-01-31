@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
-
+import toast from "react-hot-toast";
 export default function AdminDashboard() {
   const [productsCount, setProductsCount] = useState(0);
   const [ordersCount, setOrdersCount] = useState(0);
@@ -52,7 +52,7 @@ export default function AdminDashboard() {
         setRecentOrders(orders.slice(0, 5));
       } catch (error) {
         console.log("ADMIN DASHBOARD ERROR:", error.response?.data || error.message);
-        alert(error.response?.data?.message || "Dashboard fetch failed");
+        toast.error(error.response?.data?.message || "Dashboard fetch failed");
       } finally {
         setLoading(false);
       }
