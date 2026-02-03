@@ -19,22 +19,38 @@ export const CartProvider = ({ children }) => {
   }, [cartItems]);
 
   useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const guestCart = JSON.parse(localStorage.getItem(GUEST_KEY)) || [];
 
-    if (userInfo?.token) {
-      axios
-        .get("http://localhost:5000/api/cart", {
-          headers: {
-            Authorization: `Bearer ${userInfo.token}`,
-          },
-        })
-        .then((res) => {
-          setCartItems(res.data || []);
-          localStorage.removeItem(GUEST_KEY);
-        })
-        .catch(() => setCartItems([]));
-    }
-  }, []);
+  if (userInfo?.token) {
+    const syncCart = async () => {
+      // 🔁 Push guest cart into DB
+      for (let item of guestCart) {
+        await axios.post(
+          "http://localhost:5000/api/cart",
+          { productId: item._id, qty: item.qty },
+          {
+            headers: {
+              Authorization: `Bearer ${userInfo.token}`,
+            },
+          }
+        );
+      }
+
+      // ✅ Fetch final cart
+      const { data } = await axios.get("http://localhost:5000/api/cart", {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+
+      setCartItems(data || []);
+      localStorage.removeItem(GUEST_KEY);
+    };
+
+    syncCart();
+  }
+}, []);
 
   const addToCart = async (product) => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
