@@ -4,14 +4,14 @@ import { HeartOff } from "lucide-react";
 import { toast } from "react-toastify";
 
 export default function Favourites() {
-  const { favItems, removeFromFav } = useFav();
+  const { favs, removeFromFav } = useFav(); // ✅ use favs
 
   const handleRemove = (id) => {
     removeFromFav(id);
     toast.info("Removed from favourites ❤️");
   };
 
-  if (!favItems || favItems.length === 0) {
+  if (!favs || favs.length === 0) {   // ✅ favs
     return (
       <div className="min-h-screen pt-24 flex flex-col items-center justify-center">
         <h2 className="text-xl font-semibold">No favourites yet ❤️</h2>
@@ -30,7 +30,7 @@ export default function Favourites() {
       <h1 className="text-2xl font-bold mb-6">My Favourites ❤️</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {favItems.map((product) => (
+        {favs.map((product) => (   // ✅ favs
           <div key={product._id} className="bg-white rounded-2xl shadow p-4">
             <Link to={`/product/${product._id}`}>
               <img

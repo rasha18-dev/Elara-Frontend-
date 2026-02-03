@@ -15,10 +15,10 @@ export default function Navbar() {
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const navigate = useNavigate();
- const { cartItems = [] } = useCart();
+const { cartItems = [], clearCart } = useCart();
 const cartCount = cartItems?.length || 0;
 
- const { favs = [] } = useFav();
+ const { favs = [],clearFavs } = useFav();
 const favCount = favs.length;
 
 
@@ -41,13 +41,13 @@ const favCount = favs.length;
 
   const confirmLogout = () => {
   localStorage.removeItem("userInfo");
-
-  // DON'T touch cart here
-
+   clearCart();
+  clearFavs();          // ❤️ CLEAR FAVOURITES
   setShowLogoutModal(false);
+
   navigate("/login");
-  window.location.reload(); // 👈 add this line
 };
+
 
 
   // ✅ FAVOURITE CLICK ACTION
@@ -305,12 +305,21 @@ const favCount = favs.length;
             {/* ✅ Mobile Icons (Fav + Cart) */}
             <div className="flex items-center gap-10 pt-2 text-softBrown">
               {/* ❤️ Favourite */}
-            <button
+            {/* ❤️ Favourite */}
+<button
   onClick={() => { handleFavouriteClick(); setOpen(false); }}
   className="relative hover:text-antiqueGold transition"
   title="Favourites"
 >
+  <Heart className="w-6 h-6" />
+
+  {favs?.length > 0 && (
+    <span className="absolute -top-2 -right-2 bg-antiqueGold text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+      {favs.length}
+    </span>
+  )}
 </button>
+
              {/* 🛒 Cart */}
 <button
   onClick={() => {

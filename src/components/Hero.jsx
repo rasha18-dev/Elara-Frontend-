@@ -4,7 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const slides = [
   {
-    image: "/newbanner.jpg",
+    image: "/womens.jpeg",
     title: "Timeless Gold\nJewellery",
     description:
       "Crafted with purity and elegance, our gold collection defines luxury.",

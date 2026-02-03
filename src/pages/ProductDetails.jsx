@@ -6,6 +6,8 @@ import { Heart, Share2, ArrowLeft, Zap, Truck, Shield, Clock } from "lucide-reac
 import { useFav } from "../context/FavouriteContext";
 import { requireLogin } from "../utils/authCheck";
 import toast from "react-hot-toast";
+
+
 export default function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -55,13 +57,18 @@ export default function ProductDetails() {
   // ✅ check favourite
   const fav = isFav(product._id);
 
-  const handleFav = () => {
-    // ✅ Login check
-    if (!requireLogin(navigate)) return;
+ const handleFav = () => {
+  if (!requireLogin(navigate)) return;
 
-    if (fav) removeFromFav(product._id);
-    else addToFav(product);
-  };
+  if (fav) {
+    removeFromFav(product._id);
+    toast.error("Removed from favourites 💔");
+  } else {
+    addToFav(product);
+    toast.success("Added to favourites ❤️");
+  }
+};
+
 
   const handleAddToCart = () => {
     // ✅ Login check
@@ -106,35 +113,69 @@ export default function ProductDetails() {
           {/* Image Section */}
           <div className="flex flex-col gap-4">
             <div className="relative bg-white rounded-3xl overflow-hidden shadow-lg">
-              <img
-                src={product.image}
-                alt={product.name}
-                className="w-full h-[500px] object-cover hover:scale-105 transition duration-300"
-              />
 
-              {/* Badges */}
-              <div className="absolute top-6 left-6 flex flex-col gap-2">
-                {product.countInStock > 0 && (
-                  <span className="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                    In Stock
-                  </span>
-                )}
-              </div>
+  <img
+    src={product.image}
+    alt={product.name}
+    className="w-full h-[500px] object-cover hover:scale-105 transition duration-300"
+  />
 
-              {/* Favourite Button */}
-              <button
-                onClick={handleFav}
-                className="absolute top-6 right-6 bg-white shadow-lg hover:shadow-xl p-4 rounded-full transition transform hover:scale-110"
-                title={fav ? "Remove from favourites" : "Add to favourites"}
-              >
-                <Heart
-                  size={24}
-                  className={fav ? "text-red-500" : "text-gray-400"}
-                  fill={fav ? "currentColor" : "none"}
-                />
-              </button>
-            </div>
+  {/* Stock Badge */}
+  <div className="absolute top-6 left-6 z-20">
+    {product.countInStock > 0 && (
+      <span className="bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
+        In Stock
+      </span>
+    )}
+  </div>
+
+  {/* Favourite */}
+  <button
+    onClick={handleFav}
+    className="absolute top-6 right-6 z-20 bg-white shadow-lg p-3 rounded-full hover:scale-110 transition"
+  >
+    <Heart
+      size={22}
+      className={fav ? "text-red-500" : "text-gray-400"}
+      fill={fav ? "currentColor" : "none"}
+    />
+  </button>
+
+  {/* Share */}
+  <button
+    onClick={async () => {
+      const url = window.location.href;
+      const isMobile = /Android|iPhone|iPad/i.test(navigator.userAgent);
+
+      if (isMobile && navigator.share && product.image) {
+        try {
+          const res = await fetch(product.image);
+          const blob = await res.blob();
+          const file = new File([blob], "product.jpg", { type: blob.type });
+
+          await navigator.share({
+            title: product.name,
+            text: product.name,
+            files: [file],
+          });
+          return;
+        } catch (e) {
+          console.log("mobile share failed");
+        }
+      }
+
+      const msg = `${product.name}\n${url}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, "_blank");
+    }}
+    className="absolute top-6 right-20 z-20 bg-white shadow-lg p-3 rounded-full hover:scale-110 transition"
+  >
+    <Share2 size={22} />
+  </button>
+
+</div>
+
           </div>
+       
 
           {/* Details Section */}
           <div className="space-y-6">
@@ -231,11 +272,9 @@ export default function ProductDetails() {
               </button>
             </div>
 
-            {/* Share Button */}
-            <button className="w-full border-2 border-gray-200 text-[#2B1B14] py-3 rounded-xl font-semibold hover:bg-gray-50 transition flex items-center justify-center gap-2">
-              <Share2 size={18} />
-              Share This Product
-            </button>
+           
+
+
           </div>
         </div>
       </div>

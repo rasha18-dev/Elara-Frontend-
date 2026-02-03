@@ -1,10 +1,13 @@
+
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { Trash2, ShoppingBag, ArrowLeft } from "lucide-react";
 
 export default function CartPage() {
   const navigate = useNavigate();
-  const { cartItems = [], removeFromCart } = useCart();
+ const { cartItems = [], removeFromCart, updateQty } = useCart();
+
+
 
   // ✅ Normalize item (works for guest + DB cart)
   const getItem = (item) => item.productId || item;
@@ -87,6 +90,40 @@ export default function CartPage() {
                           ₹ {p?.price}
                         </p>
                       </div>
+                      {/* Quantity Controls */}
+<div className="flex items-center gap-3 mt-3">
+ <button
+  disabled={(item.qty || 1) <= 1}
+  onClick={() => {
+    const q = item.qty || 1;
+    if (q <= 1) return;
+
+    updateQty(item.productId?._id || item._id, q - 1);
+  }}
+  className={`w-8 h-8 rounded-full border flex items-center justify-center ${
+    (item.qty || 1) <= 1 ? "opacity-40 cursor-not-allowed" : ""
+  }`}
+>
+  –
+</button>
+
+
+
+
+  <span className="font-semibold">{item.qty || 1}</span>
+
+  <button
+    onClick={() =>
+      updateQty(item.productId?._id || item._id, (item.qty || 1) + 1)
+    }
+    className="w-8 h-8 rounded-full border flex items-center justify-center"
+  >
+    +
+  </button>
+</div>
+
+
+
 
                       {/* Subtotal */}
                       <div className="text-right min-w-[100px]">
@@ -98,7 +135,8 @@ export default function CartPage() {
 
                       {/* Remove */}
                       <button
-                        onClick={() => removeFromCart(item._id)}
+                        onClick={() => removeFromCart(item.productId?._id || item._id)}
+                     
                         className="text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded-lg transition"
                       >
                         <Trash2 size={20} />

@@ -14,6 +14,8 @@ export default function Profile() {
 
   // ✅ Fix: your userInfo structure may be { user: {...} } or directly {...}
   const currentUser = userInfo?.user || userInfo;
+  const isAdmin = currentUser?.isAdmin;
+
 
   const [name, setName] = useState(currentUser?.name || "");
   const [email, setEmail] = useState(currentUser?.email || "");
@@ -134,23 +136,27 @@ export default function Profile() {
           </div>
 
           {/* Quick Links */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Link
-              to="/my-orders"
-              className="group px-6 py-4 rounded-2xl bg-white border-2 border-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#2B1B14] text-[#2B1B14] font-semibold transition flex items-center gap-3 shadow-md hover:shadow-lg"
-            >
-              <span className="text-2xl">🛍️</span>
-              <span>My Orders</span>
-            </Link>
+          {/* Quick Links (hide for admin) */}
+{!isAdmin && (
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <Link
+      to="/my-orders"
+      className="group px-6 py-4 rounded-2xl bg-white border-2 border-[#D4AF37] hover:bg-[#D4AF37] hover:text-[#2B1B14] text-[#2B1B14] font-semibold transition flex items-center gap-3 shadow-md hover:shadow-lg"
+    >
+      <span className="text-2xl">🛍️</span>
+      <span>My Orders</span>
+    </Link>
 
-            <Link
-              to="/products"
-              className="group px-6 py-4 rounded-2xl bg-white border-2 border-[#2B1B14] hover:bg-[#2B1B14] hover:text-white text-[#2B1B14] font-semibold transition flex items-center gap-3 shadow-md hover:shadow-lg"
-            >
-              <span className="text-2xl">🏪</span>
-              <span>Back to Shop</span>
-            </Link>
-          </div>
+    <Link
+      to="/products"
+      className="group px-6 py-4 rounded-2xl bg-white border-2 border-[#2B1B14] hover:bg-[#2B1B14] hover:text-white text-[#2B1B14] font-semibold transition flex items-center gap-3 shadow-md hover:shadow-lg"
+    >
+      <span className="text-2xl">🏪</span>
+      <span>Back to Shop</span>
+    </Link>
+  </div>
+)}
+
         </div>
 
         {/* Main Content */}

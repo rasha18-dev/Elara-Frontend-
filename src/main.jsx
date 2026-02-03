@@ -5,11 +5,13 @@ import "./index.css";
 
 import { CartProvider } from "./context/CartContext.jsx";
 import { FavProvider } from "./context/FavouriteContext";
+import { Toaster } from "react-hot-toast";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <CartProvider>
      <FavProvider>
+       <Toaster position="top-center" />
         <App />
       </FavProvider>
     </CartProvider>

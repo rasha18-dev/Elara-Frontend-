@@ -6,7 +6,8 @@ import toast from "react-hot-toast";
 export default function AdminEditProduct() {
   const { id } = useParams();
   const navigate = useNavigate();
- 
+  
+
 
   // ✅ token
   const userInfo = localStorage.getItem("userInfo")
@@ -35,6 +36,8 @@ export default function AdminEditProduct() {
   const [description, setDescription] = useState("");
   const [countInStock, setCountInStock] = useState(0);
   const [category, setCategory] = useState("Others");
+  const [weight, setWeight] = useState("");
+
 
   // ✅ loading states
   const [loading, setLoading] = useState(true);
@@ -57,6 +60,8 @@ export default function AdminEditProduct() {
         setName(data?.name || "");
         setPrice(data?.price || "");
         setImage(data?.image || "");
+        setWeight(data.weight || "");
+
         setDescription(data?.description || "");
         setCountInStock(data?.countInStock || 0);
         setCategory(data?.category || "Others");
@@ -109,7 +114,7 @@ export default function AdminEditProduct() {
     e.preventDefault();
 
     // ✅ validation
-    if (!name || !price || !image || !category) {
+    if (!name || !price || !image || !category || !description || !weight) {
       toast.error("Please fill all fields ✅");
       return;
     }
@@ -127,6 +132,7 @@ export default function AdminEditProduct() {
           description,
           countInStock,
           category,
+           weight,
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -164,6 +170,14 @@ export default function AdminEditProduct() {
           onChange={(e) => setPrice(e.target.value)}
           placeholder="Price"
           type="number"
+          className="w-full border p-2 rounded-lg"
+        />
+
+        {/* Weight */}
+        <input
+          value={weight}  
+          onChange={(e) => setWeight(e.target.value)}
+          placeholder="Weight"
           className="w-full border p-2 rounded-lg"
         />
 

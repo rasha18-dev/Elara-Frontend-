@@ -28,7 +28,8 @@ import MyOrders from "./pages/MyOrders";
 import Favourites from "./pages/Favourites";
 import CustomizationPage from "./pages/CustomizationPage";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { Toaster } from "react-hot-toast";
+
 import OrderDetails from "./pages/OrderDetails";
 import AdminOrders from "./pages/admin/AdminOrders";
 
