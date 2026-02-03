@@ -22,7 +22,7 @@ import AdminAddProduct from "./pages/admin/AdminAddProduct";
 import AdminEditProduct from "./pages/admin/AdminEditProduct";
 
 import CartPage from "./pages/CartPage";
-import CheckoutPage from "./pages/CheckOutPage";
+import CheckoutPage from "./pages/CheckoutPage";
 import Profile from "./pages/Profile";
 import MyOrders from "./pages/MyOrders";
 import Favourites from "./pages/Favourites";
