@@ -26,11 +26,10 @@ function FilterUI({
   setOpenFilter,
 }) {
   return (
-   <div
-  className={`bg-white/90 backdrop-blur rounded-3xl shadow-sm border border-antiqueGold/15 p-6 ${
-    isMobile ? "" : "sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto"
-  }`}
->
+    <div
+      className={`bg-white/90 backdrop-blur rounded-3xl shadow-sm border border-antiqueGold/15 p-6 ${isMobile ? "" : "sticky top-20 max-h-[calc(100vh-6rem)] overflow-y-auto"
+        }`}
+    >
 
 
       <div className="flex items-center justify-between mb-5">
@@ -59,61 +58,62 @@ function FilterUI({
       </div>
 
       {/* Sort */}
-      <div className="mb-6">
-        <p className="font-semibold text-mocha mb-2 text-sm">Sort</p>
-        <select
-          value={sort}
-          onChange={(e) => setSort(e.target.value)}
-          className="w-full border border-gray-200 rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-black"
-        >
-          <option value="new">Newest</option>
-          <option value="low">Price: Low → High</option>
-          <option value="high">Price: High → Low</option>
-        </select>
+      <div className="mb-8">
+        <p className="font-luxury text-[#5D4037] mb-3 text-sm uppercase tracking-widest">Sort By</p>
+        <div className="relative">
+          <select
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+            className="w-full bg-[#FAFAFA] border border-[#E5E5E5] rounded-sm px-4 py-3 text-[#121212] font-medium focus:border-[#B08D55] outline-none appearance-none transition-colors cursor-pointer"
+          >
+            <option value="new">Newest Arrivals</option>
+            <option value="low">Price: Low to High</option>
+            <option value="high">Price: High to Low</option>
+          </select>
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[#5D4037]">↓</div>
+        </div>
       </div>
 
       {/* Price Range */}
-      <div className="mb-6">
-        <p className="font-semibold text-mocha mb-2 text-sm">Price Range</p>
-        <div className="grid grid-cols-2 gap-3">
+      <div className="mb-8">
+        <p className="font-luxury text-[#5D4037] mb-3 text-sm uppercase tracking-widest">Price Range</p>
+        <div className="grid grid-cols-2 gap-4">
           <input
             value={minPrice}
             onChange={(e) => setMinPrice(e.target.value)}
-            placeholder="Min ₹"
+            placeholder="Min"
             type="number"
-            className="w-full border border-gray-200 rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-black"
+            className="w-full bg-[#FAFAFA] border border-[#E5E5E5] rounded-sm px-4 py-3 text-[#121212] focus:border-[#B08D55] outline-none transition-colors"
           />
           <input
             value={maxPrice}
             onChange={(e) => setMaxPrice(e.target.value)}
-            placeholder="Max ₹"
+            placeholder="Max"
             type="number"
-            className="w-full border border-gray-200 rounded-2xl px-4 py-3 outline-none focus:ring-2 focus:ring-black"
+            className="w-full bg-[#FAFAFA] border border-[#E5E5E5] rounded-sm px-4 py-3 text-[#121212] focus:border-[#B08D55] outline-none transition-colors"
           />
         </div>
       </div>
 
       {/* Category */}
       <div>
-        <p className="font-semibold text-mocha mb-3 text-sm">Category</p>
+        <p className="font-luxury text-[#5D4037] mb-4 text-sm uppercase tracking-widest">Categories</p>
 
-        <div className="space-y-2 max-h-[40vh] overflow-y-auto pr-1">
-
-  {categories.map((cat) => (
-
+        <div className="space-y-2 max-h-[40vh] overflow-y-auto pr-2 custom-scrollbar">
+          {categories.map((cat) => (
             <button
               key={cat}
               type="button"
               onClick={() => setCategory(cat)}
-              className={`w-full text-left px-4 py-2.5 rounded-2xl border text-sm font-semibold transition
-                ${
-                  category === cat
-                    ? "bg-black text-white border-black"
-                    : "bg-white text-mocha border-gray-200 hover:border-black"
+              className={`w-full text-left px-4 py-3 rounded-sm text-sm transition-all duration-300 flex items-center justify-between group
+                ${category === cat
+                  ? "bg-[#121212] text-white font-bold tracking-wider shadow-md"
+                  : "bg-transparent text-[#5D4037] hover:bg-[#B08D55]/10 hover:pl-6"
                 }
               `}
             >
-              {cat}
+              <span>{cat}</span>
+              {category === cat && <span className="text-[#B08D55]">●</span>}
             </button>
           ))}
         </div>
@@ -121,18 +121,18 @@ function FilterUI({
         <button
           type="button"
           onClick={resetFilters}
-          className="mt-6 w-full px-4 py-3 rounded-2xl bg-antiqueGold text-white font-semibold hover:opacity-90 transition"
+          className="mt-8 w-full px-4 py-3 rounded-sm border border-[#5D4037] text-[#5D4037] font-bold text-xs uppercase tracking-widest hover:bg-[#5D4037] hover:text-white transition-all duration-300"
         >
-          Reset Filters
+          Reset All
         </button>
 
         {isMobile && (
           <button
             type="button"
             onClick={() => setOpenFilter(false)}
-            className="mt-3 w-full px-4 py-3 rounded-2xl bg-black text-white font-semibold hover:opacity-90 transition"
+            className="mt-3 w-full px-4 py-3 rounded-sm bg-[#121212] text-white font-bold text-xs uppercase tracking-widest hover:bg-[#B08D55] transition-all duration-300"
           >
-            Apply Filters
+            Show Results
           </button>
         )}
       </div>
@@ -163,12 +163,12 @@ function SkeletonGrid() {
 
 export default function ProductsPage() {
   const navigate = useNavigate();
-const { addToCart } = useCart();
+  const { addToCart } = useCart();
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const { addToFav, isFav } = useFav();
- 
+
 
   // ✅ Filters
   const [search, setSearch] = useState("");
@@ -224,9 +224,9 @@ const { addToCart } = useCart();
         setLoading(true);
 
         const { data } = await axios.get("http://localhost:5000/api/products");
-       
 
-       
+
+
         setProducts(data);
         // toast.success("Products loaded ✅");
       } catch (error) {
@@ -242,31 +242,31 @@ const { addToCart } = useCart();
     fetchProducts();
   }, []);
 
-    const handleAddToCart = async (product) => {
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const handleAddToCart = async (product) => {
+    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
-  if (!userInfo?.token) {
-    localStorage.setItem("pendingCart", JSON.stringify(product));
-    localStorage.setItem("redirectAfterLogin", "/products");
-    navigate("/login");
-    return;
-  }
-
-  await axios.post(
-    "http://localhost:5000/api/cart",
-    {
-      productId: product._id,
-      qty: 1,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
+    if (!userInfo?.token) {
+      localStorage.setItem("pendingCart", JSON.stringify(product));
+      localStorage.setItem("redirectAfterLogin", "/products");
+      navigate("/login");
+      return;
     }
-  );
 
-  toast.success("Added to cart 🛒");
-};
+    await axios.post(
+      "http://localhost:5000/api/cart",
+      {
+        productId: product._id,
+        qty: 1,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+        },
+      }
+    );
+
+    toast.success("Added to cart 🛒");
+  };
 
   // ✅ Reset filters
   const resetFilters = () => {
@@ -390,40 +390,40 @@ const { addToCart } = useCart();
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
               {filteredProducts.map((p) => (
-               <div
-  key={p._id}
-  className="group bg-white rounded-[32px] ..."
->
+                <div
+                  key={p._id}
+                  className="group bg-white rounded-[32px] ..."
+                >
 
                   <div className="relative overflow-hidden">
                     <button
-  onClick={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
+                      onClick={(e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
 
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+                        const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
-    if (!userInfo?.token) {
-      toast.warning("Please login to add favourites ❤️");
-      navigate("/login");
-      return;
-    }
+                        if (!userInfo?.token) {
+                          toast.warning("Please login to add favourites ❤️");
+                          navigate("/login");
+                          return;
+                        }
 
-    addToFav(p);
-    toast.success("Added to favourites ❤️");
-  }}
-  type="button"
-  className="absolute top-4 right-4 z-20 bg-white p-2 rounded-full shadow hover:scale-110 transition"
->
-  <Heart
-    size={20}
-    className={
-      isFav(p._id)
-        ? "fill-red-500 text-red-500"
-        : "text-gray-600"
-    }
-  />
-</button>
+                        addToFav(p);
+                        toast.success("Added to favourites ❤️");
+                      }}
+                      type="button"
+                      className="absolute top-4 right-4 z-20 bg-white p-2 rounded-full shadow hover:scale-110 transition"
+                    >
+                      <Heart
+                        size={20}
+                        className={
+                          isFav(p._id)
+                            ? "fill-red-500 text-red-500"
+                            : "text-gray-600"
+                        }
+                      />
+                    </button>
 
                     <img
                       src={p.image}
@@ -440,13 +440,13 @@ const { addToCart } = useCart();
                     <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition" />
 
                     <div className="absolute bottom-5 left-0 right-0 flex justify-center opacity-0 group-hover:opacity-100 transition">
-  <button
-    onClick={() => navigate(`/products/${p._id}`)}
-    className="px-5 py-2.5 rounded-full bg-white text-black text-sm font-semibold shadow"
-  >
-    View Details →
-  </button>
-</div>
+                      <button
+                        onClick={() => navigate(`/products/${p._id}`)}
+                        className="px-5 py-2.5 rounded-full bg-white text-black text-sm font-semibold shadow"
+                      >
+                        View Details →
+                      </button>
+                    </div>
 
 
                   </div>
@@ -463,17 +463,16 @@ const { addToCart } = useCart();
                     <p className="text-base font-bold text-mocha mt-2">
                       ₹ {p.price}
                     </p>
-   
+
                     <p className="text-sm text-gray-600 mt-1">
-  Weight: {p.weight}
-</p>
+                      Weight: {p.weight}
+                    </p>
 
                     <p
-                      className={`text-xs font-semibold mt-2 ${
-                        (p.countInStock || 0) === 0
-                          ? "text-red-600"
-                          : "text-green-600"
-                      }`}
+                      className={`text-xs font-semibold mt-2 ${(p.countInStock || 0) === 0
+                        ? "text-red-600"
+                        : "text-green-600"
+                        }`}
                     >
                       {(p.countInStock || 0) === 0
                         ? "Out of Stock"

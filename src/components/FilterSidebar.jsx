@@ -61,10 +61,9 @@ function MenuItem({ label, active, setActive }) {
       className={`
         cursor-pointer px-4 py-3 rounded-xl
         transition-colors duration-200
-        ${
-          isActive
-            ? "bg-[#4A1F2D]/10 text-[#4A1F2D]"
-            : "text-black hover:text-[#4A1F2D]"
+        ${isActive
+          ? "bg-[#4A1F2D]/10 text-[#4A1F2D]"
+          : "text-black hover:text-[#4A1F2D]"
         }
       `}
     >

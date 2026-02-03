@@ -15,11 +15,11 @@ export default function Navbar() {
   const [showLoginModal, setShowLoginModal] = useState(false);
 
   const navigate = useNavigate();
-const { cartItems = [], clearCart } = useCart();
-const cartCount = cartItems?.length || 0;
+  const { cartItems = [], clearCart } = useCart();
+  const cartCount = cartItems?.length || 0;
 
- const { favs = [],clearFavs } = useFav();
-const favCount = favs.length;
+  const { favs = [], clearFavs } = useFav();
+  const favCount = favs.length;
 
 
   // ✅ SAFE localStorage parsing
@@ -40,25 +40,25 @@ const favCount = favs.length;
   }, [token, isAdmin]);
 
   const confirmLogout = () => {
-  localStorage.removeItem("userInfo");
-   clearCart();
-  clearFavs();          // ❤️ CLEAR FAVOURITES
-  setShowLogoutModal(false);
+    localStorage.removeItem("userInfo");
+    clearCart();
+    clearFavs();          // ❤️ CLEAR FAVOURITES
+    setShowLogoutModal(false);
 
-  navigate("/login");
-};
+    navigate("/login");
+  };
 
 
 
   // ✅ FAVOURITE CLICK ACTION
- const handleFavouriteClick = () => {
-  if (!token) {
-    setShowLoginModal(true);
-    return;
-  }
+  const handleFavouriteClick = () => {
+    if (!token) {
+      setShowLoginModal(true);
+      return;
+    }
 
-  navigate("/favourites");
-};
+    navigate("/favourites");
+  };
 
 
   // ✅ LOGIN REDIRECT ACTION
@@ -77,51 +77,50 @@ const favCount = favs.length;
     <>
       <nav
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-300
-        bg-ivory text-mocha border-b border-antiqueGold/40
-        ${scrolled ? "shadow-md" : ""}`}
+        ${scrolled ? "bg-ivory/90 backdrop-blur-lg shadow-luxury py-3 border-b border-gray-100" : "bg-transparent py-5"}`}
       >
-        <div className="max-w-7xl mx-auto flex justify-between items-center px-6 h-16">
+        <div className="max-w-7xl mx-auto flex justify-between items-center px-6">
           {/* LOGO */}
           <h1
             onClick={() => {
               setOpen(false);
               navigate("/");
             }}
-            className="text-2xl font-luxury text-softBrown cursor-pointer select-none"
+            className="text-3xl font-luxury font-bold tracking-wide text-richBlack cursor-pointer select-none"
           >
             ELARA
           </h1>
 
           {/* ✅ DESKTOP MENU */}
-          <ul className="hidden md:flex gap-8 text-sm tracking-wider text-mocha">
-            <li className="hover:text-antiqueGold cursor-pointer">
+          <ul className="hidden md:flex gap-10 text-sm font-medium tracking-wider text-richBlack/80">
+            <li className="hover:text-antiqueGold transition duration-300 transform hover:translate-y-[-1px]">
               <Link to="/products">All Jewellery</Link>
             </li>
 
-            <li className="hover:text-antiqueGold cursor-pointer">
+            <li className="hover:text-antiqueGold transition duration-300 transform hover:translate-y-[-1px]">
               <Link to="/products?category=Diamond">Diamond</Link>
             </li>
 
-            <li className="hover:text-antiqueGold cursor-pointer">
+            <li className="hover:text-antiqueGold transition duration-300 transform hover:translate-y-[-1px]">
               <Link to="/products?category=Earrings">Earrings</Link>
             </li>
 
-            <li className="hover:text-antiqueGold cursor-pointer">
+            <li className="hover:text-antiqueGold transition duration-300 transform hover:translate-y-[-1px]">
               <Link to="/products?category=Rings">Rings</Link>
             </li>
 
-            <li className="hover:text-antiqueGold cursor-pointer">
+            <li className="hover:text-antiqueGold transition duration-300 transform hover:translate-y-[-1px]">
               <Link to="/products?category=Necklace">Necklace</Link>
             </li>
 
-            <li className="hover:text-antiqueGold cursor-pointer">
+            <li className="hover:text-antiqueGold transition duration-300 transform hover:translate-y-[-1px]">
               <Link to="/products?category=Bangles">Bangles</Link>
             </li>
 
             {/* ✅ ADMIN LINK */}
             {isAdmin && (
-              <li className="hover:text-antiqueGold cursor-pointer font-semibold bg-antiqueGold/10 px-3 py-1 rounded-full">
-                <Link to="/admin" className="flex items-center gap-1">
+              <li className="hover:text-antiqueGold cursor-pointer font-semibold bg-antiqueGold/10 px-4 py-1.5 rounded-full transition">
+                <Link to="/admin" className="flex items-center gap-1.5">
                   🛡️ Admin
                 </Link>
               </li>
@@ -129,69 +128,69 @@ const favCount = favs.length;
           </ul>
 
           {/* ✅ DESKTOP ICONS */}
-          <div className="hidden md:flex items-center gap-6 text-softBrown">
+          <div className="hidden md:flex items-center gap-8 text-richBlack/80">
             {/* ❤️ Favourite */}
             <button
-  onClick={handleFavouriteClick}
-  className="relative cursor-pointer hover:text-antiqueGold transition"
-  title="Favourites"
->
+              onClick={handleFavouriteClick}
+              className="relative cursor-pointer hover:text-antiqueGold transition transform hover:scale-110"
+              title="Favourites"
+            >
 
-              <Heart />
+              <Heart strokeWidth={1.5} />
               {favCount > 0 && (
-    <span className="absolute -top-2 -right-2 bg-antiqueGold text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-      {favCount}
-    </span>
-  )}
+                <span className="absolute -top-1 -right-1.5 bg-antiqueGold text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full animate-bounce">
+                  {favCount}
+                </span>
+              )}
             </button>
 
             {/* CART */}
-            
-<button
-  onClick={() => {
-    if (!token) {
-      localStorage.setItem("redirectAfterLogin", "/cart");
-      navigate("/login");
-    } else {
-      navigate("/cart");
-    }
-  }}
-  className="relative cursor-pointer"
->
-  <ShoppingCart className="hover:text-antiqueGold transition" />
-  {cartCount > 0 && (
-    <span className="absolute -top-2 -right-2 bg-antiqueGold text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-      {cartCount}
-    </span>
-  )}
-</button>
+
+            <button
+              onClick={() => {
+                if (!token) {
+                  localStorage.setItem("redirectAfterLogin", "/cart");
+                  navigate("/login");
+                } else {
+                  navigate("/cart");
+                }
+              }}
+              className="relative cursor-pointer hover:text-antiqueGold transition transform hover:scale-110"
+            >
+              <ShoppingCart strokeWidth={1.5} />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1.5 bg-antiqueGold text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full animate-bounce">
+                  {cartCount}
+                </span>
+              )}
+            </button>
 
             {/* ✅ LOGIN OR PROFILE + LOGOUT */}
             {!token ? (
               <Link
                 to="/login"
-                className="flex items-center gap-2 hover:text-antiqueGold transition"
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-richBlack/20 hover:border-antiqueGold hover:text-antiqueGold transition text-xs font-semibold uppercase tracking-widest"
               >
-                <UserCircle2 />
-                <span className="text-sm font-semibold">Login</span>
+                <UserCircle2 size={18} />
+                <span>Login</span>
               </Link>
             ) : (
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-6">
                 {/* Profile */}
                 <Link
                   to="/profile"
-                  className="flex items-center gap-2 hover:text-antiqueGold transition"
+                  className="flex items-center gap-2 hover:text-antiqueGold transition transform hover:scale-110"
                 >
-                  <UserCircle2 />
+                  <UserCircle2 strokeWidth={1.5} />
                 </Link>
 
                 {/* Logout */}
                 <button
                   onClick={() => setShowLogoutModal(true)}
-                  className="flex items-center gap-2 hover:text-antiqueGold transition"
+                  className="flex items-center gap-2 hover:text-red-500 transition transform hover:scale-110"
                   title="Logout"
                 >
-                  <LogOut size={20} />
+                  <LogOut size={20} strokeWidth={1.5} />
                 </button>
               </div>
             )}
@@ -199,7 +198,7 @@ const favCount = favs.length;
 
           {/* ✅ MOBILE BUTTON */}
           <button
-            className="md:hidden text-3xl text-softBrown"
+            className="md:hidden text-3xl text-richBlack"
             onClick={() => setOpen(!open)}
           >
             ☰
@@ -209,52 +208,52 @@ const favCount = favs.length;
         {/* ✅ MOBILE MENU */}
         <div
           className={`md:hidden overflow-hidden transition-all duration-500 ease-in-out
-          ${open ? "max-h-[900px] opacity-100" : "max-h-0 opacity-0"}`}
+          ${open ? "max-h-[800px] opacity-100 shadow-xl" : "max-h-0 opacity-0"}`}
         >
           <ul
-            className="flex flex-col items-center gap-6 py-8 bg-champagne text-mocha
-            text-sm tracking-wider border-t border-antiqueGold/40"
+            className="flex flex-col items-center gap-6 py-10 bg-ivory text-richBlack
+            text-sm font-medium tracking-widest border-t border-gray-100"
           >
             {/* ✅ Category Links */}
             <li>
-              <Link to="/products" onClick={() => setOpen(false)}>
+              <Link to="/products" onClick={() => setOpen(false)} className="hover:text-antiqueGold">
                 All Jewellery
               </Link>
             </li>
 
             <li>
-              <Link to="/products?category=Diamond" onClick={() => setOpen(false)}>
+              <Link to="/products?category=Diamond" onClick={() => setOpen(false)} className="hover:text-antiqueGold">
                 Diamond
               </Link>
             </li>
 
             <li>
-              <Link to="/products?category=Earrings" onClick={() => setOpen(false)}>
+              <Link to="/products?category=Earrings" onClick={() => setOpen(false)} className="hover:text-antiqueGold">
                 Earrings
               </Link>
             </li>
 
             <li>
-              <Link to="/products?category=Rings" onClick={() => setOpen(false)}>
+              <Link to="/products?category=Rings" onClick={() => setOpen(false)} className="hover:text-antiqueGold">
                 Rings
               </Link>
             </li>
 
             <li>
-              <Link to="/products?category=Necklace" onClick={() => setOpen(false)}>
+              <Link to="/products?category=Necklace" onClick={() => setOpen(false)} className="hover:text-antiqueGold">
                 Necklace
               </Link>
             </li>
 
             <li>
-              <Link to="/products?category=Bangles" onClick={() => setOpen(false)}>
+              <Link to="/products?category=Bangles" onClick={() => setOpen(false)} className="hover:text-antiqueGold">
                 Bangles
               </Link>
             </li>
 
             {/* ✅ ADMIN LINK (Mobile) */}
             {isAdmin && (
-              <li className="font-semibold bg-antiqueGold/10 px-3 py-2 rounded-lg">
+              <li className="font-semibold bg-antiqueGold/10 px-4 py-2 rounded-lg text-antiqueGold">
                 <Link to="/admin" onClick={() => setOpen(false)} className="flex items-center gap-2">
                   🛡️ Admin Dashboard
                 </Link>
@@ -262,19 +261,19 @@ const favCount = favs.length;
             )}
 
             {/* ✅ Divider */}
-            <div className="w-10/12 h-[1px] bg-antiqueGold/30"></div>
+            <div className="w-10/12 h-[1px] bg-gray-200"></div>
 
             {/* ✅ Profile / Orders / Logout if logged in */}
             {token ? (
               <>
                 <li>
-                  <Link to="/profile" onClick={() => setOpen(false)}>
+                  <Link to="/profile" onClick={() => setOpen(false)} className="hover:text-antiqueGold">
                     👤 Profile
                   </Link>
                 </li>
 
                 <li>
-                  <Link to="/my-orders" onClick={() => setOpen(false)}>
+                  <Link to="/my-orders" onClick={() => setOpen(false)} className="hover:text-antiqueGold">
                     📦 My Orders
                   </Link>
                 </li>
@@ -285,7 +284,7 @@ const favCount = favs.length;
                       setShowLogoutModal(true);
                       setOpen(false);
                     }}
-                    className="font-semibold hover:text-antiqueGold transition"
+                    className="font-semibold hover:text-red-500 transition"
                   >
                     🚪 Logout
                   </button>
@@ -293,54 +292,54 @@ const favCount = favs.length;
               </>
             ) : (
               <li>
-                <Link to="/login" onClick={() => setOpen(false)}>
+                <Link to="/login" onClick={() => setOpen(false)} className="font-semibold text-antiqueGold">
                   🔐 Login
                 </Link>
               </li>
             )}
 
             {/* ✅ Divider */}
-            <div className="w-10/12 h-[1px] bg-antiqueGold/30"></div>
+            <div className="w-10/12 h-[1px] bg-gray-200"></div>
 
             {/* ✅ Mobile Icons (Fav + Cart) */}
-            <div className="flex items-center gap-10 pt-2 text-softBrown">
+            <div className="flex items-center gap-10 pt-2 text-richBlack">
               {/* ❤️ Favourite */}
-            {/* ❤️ Favourite */}
-<button
-  onClick={() => { handleFavouriteClick(); setOpen(false); }}
-  className="relative hover:text-antiqueGold transition"
-  title="Favourites"
->
-  <Heart className="w-6 h-6" />
+              {/* ❤️ Favourite */}
+              <button
+                onClick={() => { handleFavouriteClick(); setOpen(false); }}
+                className="relative hover:text-antiqueGold transition"
+                title="Favourites"
+              >
+                <Heart className="w-6 h-6" strokeWidth={1.5} />
 
-  {favs?.length > 0 && (
-    <span className="absolute -top-2 -right-2 bg-antiqueGold text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-      {favs.length}
-    </span>
-  )}
-</button>
+                {favs?.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-antiqueGold text-white text-[10px] px-1.5 py-0.5 rounded-full">
+                    {favs.length}
+                  </span>
+                )}
+              </button>
 
-             {/* 🛒 Cart */}
-<button
-  onClick={() => {
-    setOpen(false);
+              {/* 🛒 Cart */}
+              <button
+                onClick={() => {
+                  setOpen(false);
 
-    if (!token) {
-      localStorage.setItem("redirectAfterLogin", "/cart");
-      navigate("/login");
-    } else {
-      navigate("/cart");
-    }
-  }}
-  className="relative"
->
-  <ShoppingCart className="hover:text-antiqueGold transition" />
-  {cartCount > 0 && (
-    <span className="absolute -top-2 -right-2 bg-antiqueGold text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-      {cartCount}
-    </span>
-  )}
-</button>
+                  if (!token) {
+                    localStorage.setItem("redirectAfterLogin", "/cart");
+                    navigate("/login");
+                  } else {
+                    navigate("/cart");
+                  }
+                }}
+                className="relative hover:text-antiqueGold transition"
+              >
+                <ShoppingCart className="w-6 h-6" strokeWidth={1.5} />
+                {cartCount > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-antiqueGold text-white text-[10px] px-1.5 py-0.5 rounded-full">
+                    {cartCount}
+                  </span>
+                )}
+              </button>
 
             </div>
           </ul>
@@ -349,24 +348,24 @@ const favCount = favs.length;
 
       {/* ✅ LOGOUT CONFIRM MODAL */}
       {showLogoutModal && (
-        <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/50 px-4">
-          <div className="w-full max-w-sm rounded-2xl bg-ivory p-6 shadow-xl border border-antiqueGold/40">
-            <h2 className="text-lg font-semibold text-mocha">Confirm Logout</h2>
-            <p className="text-sm text-softBrown mt-2">
-              Are you sure you want to logout?
+        <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+          <div className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-2xl border border-gray-100 transform transition-all scale-100">
+            <h2 className="text-xl font-luxury font-semibold text-richBlack text-center">Confirm Logout</h2>
+            <p className="text-sm text-gray-500 mt-3 text-center">
+              Are you sure you want to end your session?
             </p>
 
-            <div className="mt-6 flex gap-3 justify-end">
+            <div className="mt-8 flex gap-4 justify-center">
               <button
                 onClick={() => setShowLogoutModal(false)}
-                className="px-4 py-2 rounded-xl border border-softBrown/30 text-mocha hover:bg-softBrown/10 transition"
+                className="px-6 py-2.5 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50 transition text-sm font-medium"
               >
                 Cancel
               </button>
 
               <button
                 onClick={confirmLogout}
-                className="px-4 py-2 rounded-xl bg-antiqueGold text-white hover:opacity-90 transition"
+                className="px-6 py-2.5 rounded-full bg-richBlack text-white hover:bg-black transition shadow-lg text-sm font-medium"
               >
                 Logout
               </button>
@@ -377,24 +376,24 @@ const favCount = favs.length;
 
       {/* ✅ LOGIN REQUIRED MODAL */}
       {showLoginModal && (
-        <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/50 px-4">
-          <div className="w-full max-w-sm rounded-2xl bg-ivory p-6 shadow-xl border border-antiqueGold/40">
-            <h2 className="text-lg font-semibold text-mocha">Login Required</h2>
-            <p className="text-sm text-softBrown mt-2">
+        <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/40 backdrop-blur-sm px-4">
+          <div className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-2xl border border-gray-100">
+            <h2 className="text-xl font-luxury font-semibold text-richBlack text-center">Login Required</h2>
+            <p className="text-sm text-gray-500 mt-3 text-center">
               Please login to view your favourites ❤️
             </p>
 
-            <div className="mt-6 flex gap-3 justify-end">
+            <div className="mt-8 flex gap-4 justify-center">
               <button
                 onClick={() => setShowLoginModal(false)}
-                className="px-4 py-2 rounded-xl border border-softBrown/30 text-mocha hover:bg-softBrown/10 transition"
+                className="px-6 py-2.5 rounded-full border border-gray-300 text-gray-600 hover:bg-gray-50 transition text-sm font-medium"
               >
                 Cancel
               </button>
 
               <button
                 onClick={goToLogin}
-                className="px-4 py-2 rounded-xl bg-antiqueGold text-white hover:opacity-90 transition"
+                className="px-6 py-2.5 rounded-full bg-antiqueGold text-white hover:bg-opacity-90 transition shadow-lg text-sm font-medium"
               >
                 Login
               </button>
@@ -403,7 +402,7 @@ const favCount = favs.length;
         </div>
       )}
 
-     
+
     </>
   );
 }

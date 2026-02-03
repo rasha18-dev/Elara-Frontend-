@@ -7,28 +7,32 @@ const collections = [
     subtitle: "Timeless everyday luxury",
     image: "/Ring.jpg",
     link: "/products?category=Rings",
-    height: "h-[360px] md:h-[420px]",
+    height: "h-[400px] md:h-[480px]",
+    colSpan: "md:col-span-1",
   },
   {
     title: "Necklace",
     subtitle: "Signature statement pieces",
     image: "/nekalace.jpg",
     link: "/products?category=Necklace",
-    height: "h-[260px] md:h-[300px]",
+    height: "h-[300px] md:h-[350px]",
+    colSpan: "md:col-span-1",
   },
   {
     title: "Earrings",
     subtitle: "Elegant modern designs",
     image: "/earings.jpg",
     link: "/products?category=Earrings",
-    height: "h-[300px] md:h-[360px]",
+    height: "h-[350px] md:h-[400px]",
+    colSpan: "md:col-span-1",
   },
   {
     title: "Anklets",
     subtitle: "Minimal & classy styles",
     image: "/anklets.jpg",
     link: "/products?category=Anklets",
-    height: "h-[240px] md:h-[280px]",
+    height: "h-[280px] md:h-[430px]",
+    colSpan: "md:col-span-1",
   },
 ];
 
@@ -56,96 +60,72 @@ export default function SectionLatest() {
   }, []);
 
   return (
-    <section className="bg-ivory py-24" ref={sectionRef}>
+    <section className="bg-softGray py-32" ref={sectionRef}>
       <div className="max-w-7xl mx-auto px-6">
         {/* HEADER */}
         <div
-          className={`text-center mb-16 transition-all duration-700 ease-out
-            ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}
+          className={`text-center mb-20 transition-all duration-1000 ease-out
+            ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
           `}
         >
-          <h2 className="text-3xl md:text-5xl font-luxury text-mocha">
+          <span className="text-antiqueGold text-xs font-bold tracking-[0.2em] uppercase mb-4 block">
+            New Arrivals
+          </span>
+          <h2 className="text-4xl md:text-5xl font-luxury text-richBlack tracking-tight">
             Latest Collections
           </h2>
-          <p className="mt-4 text-mocha/70 text-sm md:text-base max-w-2xl mx-auto">
-            Discover fresh arrivals crafted with elegance and precision ✨
+          <p className="mt-6 text-richBlack/60 text-base max-w-2xl mx-auto font-light leading-relaxed">
+            Discover our newest additions, crafted with precision to bring timeless elegance to your everyday life.
           </p>
         </div>
 
-        {/* ✅ Masonry Grid */}
-        <div className="columns-1 sm:columns-2 lg:columns-4 gap-6 space-y-6">
+        {/* ✅ Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {collections.map((c, idx) => (
             <Link
               key={c.title}
               to={c.link}
-              style={{ transitionDelay: `${idx * 120}ms` }}
+              style={{ transitionDelay: `${idx * 150}ms` }}
               className={`
-                group relative block break-inside-avoid
-                rounded-[32px] overflow-hidden
-                bg-white/50 backdrop-blur-xl
-                border border-antiqueGold/15
-                shadow-md hover:shadow-xl
+                group relative block overflow-hidden rounded-[2px] shadow-sm hover:shadow-2xl
                 transition-all duration-700 ease-out
-                hover:-translate-y-1
-                ${
-                  visible
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-8"
+                ${c.colSpan}
+                ${c.height}
+                ${visible
+                  ? "opacity-100 translate-y-0"
+                  : "opacity-0 translate-y-12"
                 }
               `}
             >
-              {/* ✅ LUXURY SHIMMER EFFECT */}
-              <div
-                className="
-                  pointer-events-none absolute inset-0 z-20
-                  opacity-0 group-hover:opacity-100 transition duration-500
-                "
-              >
-                {/* moving shine */}
-                <div
-                  className="
-                    absolute -left-[60%] top-0 h-full w-[60%]
-                    bg-gradient-to-r from-transparent via-white/35 to-transparent
-                    rotate-12
-                    translate-x-0
-                    group-hover:translate-x-[260%]
-                    transition-transform duration-[900ms] ease-out
-                  "
-                />
-              </div>
+
 
               {/* IMAGE */}
-              <div className={`relative w-full overflow-hidden ${c.height}`}>
+              <div className="relative w-full h-full overflow-hidden">
                 <img
                   src={c.image}
                   alt={c.title}
                   className="
                     h-full w-full object-cover
-                    transition duration-700
-                    group-hover:scale-[1.12]
+                    transition duration-[1.2s] ease-out
+                    group-hover:scale-110
                   "
                 />
 
-                {/* overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-90" />
+                {/* dark overlay gradient */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-700" />
 
-                {/* glow border on hover */}
-                <div className="absolute inset-0 ring-0 group-hover:ring-2 ring-antiqueGold/70 transition" />
-
-                {/* floating glow */}
-                <div className="absolute -inset-10 opacity-0 group-hover:opacity-100 transition duration-700 blur-3xl">
-                  <div className="w-full h-full bg-antiqueGold/10" />
-                </div>
+                {/* border inset */}
+                <div className="absolute inset-4 border border-white/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
               </div>
 
               {/* CONTENT */}
-              <div className="relative z-10 p-5">
-                <h3 className="text-xl font-luxury text-mocha">{c.title}</h3>
-                <p className="text-xs text-mocha/70 mt-2">{c.subtitle}</p>
+              <div className="absolute bottom-0 left-0 w-full p-8 translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                <h3 className="text-2xl font-luxury text-white mb-2">{c.title}</h3>
+                <p className="text-white/80 text-sm font-light mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100">{c.subtitle}</p>
 
-                <p className="mt-4 text-sm font-semibold text-antiqueGold">
-                  Explore →
-                </p>
+                <div className="flex items-center gap-3">
+                  <span className="text-antiqueGold text-xs font-bold uppercase tracking-widest border-b border-antiqueGold pb-1">Explore</span>
+                </div>
               </div>
             </Link>
           ))}

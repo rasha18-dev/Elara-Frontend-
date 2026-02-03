@@ -9,7 +9,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
-import OtpVerify from "./pages/Otpverify";
+import OtpVerify from "./pages/OtpVerify";
 import ImageUpload from "./pages/ImageUpload";
 
 import ProductsPage from "./pages/ProductsPage";
