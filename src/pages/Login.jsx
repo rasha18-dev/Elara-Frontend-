@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
+import axios from "../api/axios";
 import { Eye, EyeOff, Mail, Lock } from "lucide-react";
 import { toast } from "react-toastify";
 
@@ -25,10 +25,11 @@ export default function Login() {
     try {
       setLoading(true);
 
-      const { data } = await axios.post("http://localhost:5000/api/users/login", {
-        email,
-        password,
-      });
+      const { data } = await axios.post("/users/login", {
+  email,
+  password,
+});
+
 
       localStorage.setItem("userInfo", JSON.stringify(data));
 
