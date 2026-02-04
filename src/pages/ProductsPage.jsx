@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import axios from "axios";
+import axios from "../api/axios";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 
@@ -223,7 +223,8 @@ export default function ProductsPage() {
       try {
         setLoading(true);
 
-        const { data } = await axios.get("http://localhost:5000/api/products");
+        const { data } = await axios.get("/products");
+
 
 
 
@@ -242,31 +243,30 @@ export default function ProductsPage() {
     fetchProducts();
   }, []);
 
-  const handleAddToCart = async (product) => {
-    const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+const handleAddToCart = async (product) => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
-    if (!userInfo?.token) {
-      localStorage.setItem("pendingCart", JSON.stringify(product));
-      localStorage.setItem("redirectAfterLogin", "/products");
-      navigate("/login");
-      return;
-    }
+  if (!userInfo?.token) {
+    localStorage.setItem("pendingCart", JSON.stringify(product));
+    localStorage.setItem("redirectAfterLogin", "/products");
+    navigate("/login");
+    return;
+  }
 
-    await axios.post(
-      "http://localhost:5000/api/cart",
-      {
-        productId: product._id,
-        qty: 1,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-        },
-      }
-    );
+  try {
+    await axios.post("/cart", {
+      productId: product._id,
+      qty: 1,
+    });
 
+    addToCart(product, 1);
     toast.success("Added to cart 🛒");
-  };
+  } catch (err) {
+    console.log("ADD TO CART ERROR:", err?.response?.data || err.message);
+    toast.error("Failed to add cart");
+  }
+};
+
 
   // ✅ Reset filters
   const resetFilters = () => {
