@@ -70,25 +70,15 @@ export default function ProductDetails() {
   };
 
 
-  const handleAddToCart = async () => {
-  if (!requireLogin(navigate)) return;
+  const handleAddToCart = () => {
+    // ✅ Login check
+    if (!requireLogin(navigate)) return;
 
-  try {
-    await axios.post("/cart", {
-      productId: product._id,
-      qty: 1,
-    });
+    addToCart({ ...product, qty: 1 });
 
-    addToCart(product, 1);
-    toast.success("Added to cart 🛒");
 
     navigate("/cart");
-  } catch (err) {
-    console.log("ADD TO CART ERROR:", err?.response?.data || err.message);
-    toast.error("Failed to add cart");
-  }
-};
-
+  };
 
   const handleShopNow = () => {
     // ✅ Login check
