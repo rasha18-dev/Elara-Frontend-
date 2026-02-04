@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
-import axios from "axios";
+import axios from "../api/axios";
 import { useCart } from "../context/CartContext";
 import { Heart, Share2, ArrowLeft, Zap, Truck, Shield, Clock } from "lucide-react";
 import { useFav } from "../context/FavouriteContext";
@@ -20,18 +20,19 @@ export default function ProductDetails() {
 
   // ✅ fetch product
   const fetchProduct = async () => {
-    try {
-      setLoading(true);
-      const { data } = await axios.get(
-        `http://localhost:5000/api/products/${id}`
-      );
-      setProduct(data);
-    } catch (error) {
-      toast.error(error?.response?.data?.message || "Product fetch failed");
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    setLoading(true);
+
+    const { data } = await axios.get(`/products/${id}`);
+
+    setProduct(data);
+  } catch (error) {
+    toast.error(error?.response?.data?.message || "Product fetch failed");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   useEffect(() => {
     fetchProduct();
