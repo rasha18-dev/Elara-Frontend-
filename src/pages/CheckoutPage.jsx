@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useCart } from "../context/CartContext";
-import axios from "axios";
+import axios from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { isValidPhone } from "../utils/validators";
@@ -64,7 +64,7 @@ export default function CheckoutPage() {
 
       // ✅ 1) Save COD order in DB
       const res = await axios.post(
-        "http://localhost:5000/api/orders",
+        "/orders",
         {
           orderItems,
           shippingAddress: { name, phone, address },
