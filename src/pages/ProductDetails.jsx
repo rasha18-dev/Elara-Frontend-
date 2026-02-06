@@ -70,31 +70,42 @@ export default function ProductDetails() {
   };
 
 
-  const handleAddToCart = () => {
-    // ✅ Login check
-    if (!requireLogin(navigate)) return;
+  const handleAddToCart = async () => {
+  if (!requireLogin(navigate)) return;
 
-    addToCart({ ...product, qty: 1 });
-
-
-    navigate("/cart");
-  };
-
-  const handleShopNow = () => {
-    // ✅ Login check
-    if (!requireLogin(navigate)) return;
-
-    addToCart({
-      _id: product._id,
-      name: product.name,
-      image: product.image,
-      price: product.price,
-      category: product.category,
-      countInStock: product.countInStock,
+  try {
+    await axios.post("/cart", {
+      productId: product._id,
+      qty: 1,
     });
 
+    addToCart(product, 1);
+    toast.success("Added to cart 🛒");
+
+    navigate("/cart");
+  } catch (err) {
+    console.log("ADD TO CART ERROR:", err?.response?.data || err.message);
+    toast.error("Failed to add cart");
+  }
+};
+
+  const handleShopNow = async () => {
+  if (!requireLogin(navigate)) return;
+
+  try {
+    await axios.post("/cart", {
+      productId: product._id,
+      qty: 1,
+    });
+
+    addToCart(product, 1);
+
     navigate("/checkout");
-  };
+  } catch (err) {
+    toast.error("Buy now failed");
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-[#F9F6F0] py-16 px-6">
