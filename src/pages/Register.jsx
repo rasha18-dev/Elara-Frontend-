@@ -63,7 +63,7 @@ export default function Register() {
           Create Account
         </h2>
         <p className="text-gray-600 text-center text-sm mb-8">
-          Join ELARA and start shopping
+          Join RUMEA and start shopping
         </p>
 
         <form className="space-y-5" onSubmit={submitHandler}>

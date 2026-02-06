@@ -8,7 +8,7 @@ export const openWhatsAppOrder = ({ name, phone, address, items, total }) => {
     )
     .join("\n");
 
-  const message = `✅ YOUR ORDER IS CONFIRMED - ELARA ✅
+  const message = `✅ YOUR ORDER IS CONFIRMED -  RUMEA ✅
 
 👤 Name: ${name}
 📞 Phone: ${phone}
@@ -19,7 +19,7 @@ ${itemsText}
 
 💰 Total Amount: ₹${total}
 
-Thank you for shopping with ELARA ❤️`;
+Thank you for shopping with RUMEA ❤️`;
 
   window.open(`https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`, "_blank");
 };

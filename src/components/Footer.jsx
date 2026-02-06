@@ -15,7 +15,7 @@ export default function Footer() {
           {/* ✅ BRAND - span 4 cols */}
           <div className="md:col-span-4 space-y-6">
             <h3 className="text-4xl font-luxury text-[#5D4037] tracking-wider cursor-default">
-              ELARA
+              RUMEA
             </h3>
             <p className="text-sm leading-relaxed max-w-sm font-light text-[#121212]/70">
               Timeless jewellery crafted with elegance, purity, and modern luxury. Designed to sparkle with every moment of your life.
@@ -25,7 +25,7 @@ export default function Footer() {
             <div className="flex gap-4 pt-2">
               {[
                 { icon: "instagram", link: "https://instagram.com" },
-                { icon: "whatsapp", link: "https://wa.me/919999999999" }
+                { icon: "whatsapp", link: "https://wa.me/917736952028" }
               ].map((social, i) => (
                 <a
                   key={i}
@@ -89,7 +89,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <p className="text-[10px] text-[#5D4037]/60 uppercase tracking-widest mb-1">Email Us</p>
-                  <span className="text-[#121212] font-medium group-hover:text-[#B08D55] transition cursor-pointer">elara@gmail.com</span>
+                  <span className="text-[#121212] font-medium group-hover:text-[#B08D55] transition cursor-pointer">rumea@gmail.com</span>
                 </div>
               </div>
             </div>
@@ -131,7 +131,7 @@ export default function Footer() {
       {/* ✅ Bottom Bar */}
       <div className="border-t border-[#5D4037]/10">
         <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row gap-4 items-center justify-between text-xs text-[#5D4037]/60 font-medium">
-          <p>© {new Date().getFullYear()} ELARA. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} RUMEA. All rights reserved.</p>
           <div className="flex gap-8">
             <span className="hover:text-[#B08D55] cursor-pointer transition">Privacy</span>
             <span className="hover:text-[#B08D55] cursor-pointer transition">Terms</span>

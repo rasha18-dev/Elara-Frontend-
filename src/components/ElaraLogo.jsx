@@ -15,7 +15,7 @@ export default function ElaraLogo() {
         fill="#111"
         fontFamily="serif"
       >
-        ELARA
+        RUMEA
       </text>
     </svg>
   );

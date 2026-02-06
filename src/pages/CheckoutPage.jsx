@@ -90,7 +90,7 @@ localStorage.removeItem("cartItems");
 
 
       // ✅ 2) Open WhatsApp message
-      const adminNumber = "919876543210"; // ✅ YOUR WhatsApp number
+      const adminNumber = "7736952028"; // ✅ YOUR WhatsApp number
 
       const itemsText = cartItems
         .map(
@@ -100,7 +100,7 @@ localStorage.removeItem("cartItems");
         )
         .join("\n");
 
-      const message = `✅ YOUR ORDER IS CONFIRMED - ELARA ✅
+      const message = `✅ YOUR ORDER IS CONFIRMED -  RUMEA ✅
 
 👤 Name: ${name}
 📞 Phone: ${phone}
@@ -113,7 +113,7 @@ ${itemsText}
 
 🧾 Order ID: ${res.data?.order?._id || "N/A"}
 
-Thank you for shopping with ELARA ❤️`;
+Thank you for shopping with RUMEA ❤️`;
 
       window.open(
         `https://wa.me/${adminNumber}?text=${encodeURIComponent(message)}`,

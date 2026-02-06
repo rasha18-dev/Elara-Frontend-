@@ -88,7 +88,7 @@ export default function Navbar() {
             }}
             className="text-3xl font-luxury font-bold tracking-wide text-richBlack cursor-pointer select-none"
           >
-            ELARA
+            RUMEA
           </h1>
 
           {/* ✅ DESKTOP MENU */}

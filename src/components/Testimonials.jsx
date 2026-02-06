@@ -18,7 +18,7 @@ export default function Testimonials() {
     {
       name: "Sara",
       rating: 5,
-      comment: "The finishing is so classy. ELARA feels luxurious!",
+      comment: "The finishing is so classy. RUMEA feels luxurious!",
     },
   ];
 
@@ -31,7 +31,7 @@ export default function Testimonials() {
             Testimonials
           </h2>
           <p className="mt-4 text-mocha/70 text-base md:text-lg">
-            What our customers say about ELARA
+            What our customers say about RUMEA
           </p>
         </div>
 

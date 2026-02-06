@@ -53,7 +53,7 @@ export default function Login() {
         {/* Top Luxury Header */}
         <div className="px-10 pt-10 pb-6 text-center bg-gradient-to-b from-champagne to-white">
           <p className="text-xs tracking-[0.35em] text-antiqueGold font-semibold">
-            ELARA
+            WELCOME TO RUMEA
           </p>
           <h2 className="text-3xl font-luxury text-softBrown mt-3">
             Welcome Back
