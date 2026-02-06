@@ -63,18 +63,19 @@ export default function CheckoutPage() {
 
 
       // ✅ 1) Save COD order in DB
-      const res = await axios.post(
-        "/orders",
-        {
-          orderItems,
-          shippingAddress: { name, phone, address },
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
+    const { clearCart } = useCart();
       toast.success(res.data.message || "Order Confirmed ✅");
+      // ✅ clear backend cart
+await axios.delete("/cart", {
+  headers: { Authorization: `Bearer ${token}` },
+});
+
+// ✅ clear frontend cart
+clearCart();
+
+// ✅ clear local storage (if used)
+localStorage.removeItem("cartItems");
+
 
       // ✅ 2) Open WhatsApp message
       const adminNumber = "919876543210"; // ✅ YOUR WhatsApp number
