@@ -63,7 +63,18 @@ export default function CheckoutPage() {
 
 
       // ✅ 1) Save COD order in DB
-    const { clearCart } = useCart();
+      const { clearCart } = useCart();
+      const res = await axios.post(
+        "/orders",
+        {
+          orderItems,
+          shippingAddress: { name, phone, address },
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
       toast.success(res.data.message || "Order Confirmed ✅");
       // ✅ clear backend cart
 await axios.delete("/cart", {
