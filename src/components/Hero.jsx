@@ -5,32 +5,27 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 const slides = [
   {
     image: "/bridal.jpg",
-  
-    title: "Timeless Golden Jewellery",
-    description:
-      "Crafted with purity and elegance, our gold collection defines luxury.",
     tag: "Gold Collection",
+    title: "Timeless Gold",
+    description: "Pure gold. Crafted to last forever.",
   },
   {
     image: "/39860.jpg.jpeg",
-    title: "Brilliant Diamond Collection",
-    description:
-      "Shine with confidence through our handpicked diamond masterpieces.",
     tag: "Diamond Collection",
+    title: "Brilliant Diamonds",
+    description: "Exceptional sparkle, perfectly refined.",
   },
   {
     image: "/womens.jpeg",
-    title: "Elegant Bridal Jewellery",
-    description:
-      "Celebrate your special moments with timeless bridal designs.",
     tag: "Bridal Collection",
+    title: "Forever Bridal",
+    description: "Designed for your once-in-a-lifetime moment.",
   },
 ];
 
 export default function Hero() {
   const [current, setCurrent] = useState(0);
   const [animate, setAnimate] = useState(true);
-
   const navigate = useNavigate();
 
   // ✅ Auto slider
@@ -64,20 +59,18 @@ export default function Hero() {
 
   return (
     <section className="relative h-screen w-full overflow-hidden">
-      {/* ✅ Background slides with zoom */}
+      {/* ✅ Background slides */}
       {slides.map((slide, index) => (
         <div
           key={index}
           className={`absolute inset-0 transition-transform duration-[2000ms] ease-out
-            ${index === current
-              ? "scale-105"
-              : "scale-100"
-            }`}
+            ${index === current ? "scale-105" : "scale-100"}
+          `}
         >
           <div
             className={`absolute inset-0 transition-opacity duration-[1500ms] ease-in-out
-               ${index === current ? "opacity-100" : "opacity-0"}
-             `}
+              ${index === current ? "opacity-100" : "opacity-0"}
+            `}
             style={{
               backgroundImage: `url(${slide.image})`,
               backgroundSize: "cover",
@@ -97,10 +90,7 @@ export default function Hero() {
           className={`
             max-w-3xl
             transition-all duration-1000 ease-out transform
-            ${animate
-              ? "opacity-100 translate-y-0"
-              : "opacity-0 translate-y-10"
-            }
+            ${animate ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}
           `}
         >
           {/* ✅ Tag */}
@@ -116,60 +106,66 @@ export default function Hero() {
           </h1>
 
           {/* ✅ Description */}
-          <p className="mt-8 text-white/90 text-lg font-light leading-relaxed max-w-xl opacity-90">
+          <p className="mt-8 text-white/90 text-lg font-light leading-relaxed max-w-xl">
             {slides[current].description}
           </p>
 
-          {/* ✅ Only One Button */}
+          {/* ✅ Button */}
           <button
             onClick={() => navigate("/products")}
             className="
-              mt-12 px-10 py-4 rounded-none
+              mt-12 px-10 py-4
               bg-antiqueGold text-white text-sm font-bold tracking-widest uppercase
               hover:bg-white hover:text-richBlack
               transition-all duration-500 ease-out
-              shadow-[0_4px_14px_0_rgba(0,0,0,0.39)] hover:shadow-[0_6px_20px_rgba(255,255,255,0.23)]
+              shadow-[0_4px_14px_0_rgba(0,0,0,0.39)]
+              hover:shadow-[0_6px_20px_rgba(255,255,255,0.23)]
             "
           >
             Explore Collection
           </button>
 
-          {/* ✅ Custom Dots */}
+          {/* ✅ Dots */}
           <div className="mt-16 flex gap-3">
             {slides.map((_, i) => (
               <button
                 key={i}
                 onClick={() => setCurrent(i)}
-                className={`h-[3px] transition-all duration-500 rounded-full ${current === i ? "w-12 bg-antiqueGold" : "w-6 bg-white/30 hover:bg-white/60"
-                  }`}
+                className={`h-[3px] rounded-full transition-all duration-500
+                  ${
+                    current === i
+                      ? "w-12 bg-antiqueGold"
+                      : "w-6 bg-white/30 hover:bg-white/60"
+                  }
+                `}
               />
             ))}
           </div>
         </div>
       </div>
 
-      {/* ✅ Prev / Next arrows */}
+      {/* ✅ Arrows (desktop only) */}
       <div className="absolute bottom-12 right-12 z-20 hidden md:flex gap-4">
         <button
           onClick={goPrev}
           className="
-            group flex items-center justify-center w-14 h-14 rounded-full
+            flex items-center justify-center w-14 h-14 rounded-full
             border border-white/20 backdrop-blur-sm bg-white/5
-            hover:bg-white/10 hover:border-white/40 transition-all duration-300
+            hover:bg-white/10 hover:border-white/40 transition-all
           "
         >
-          <ChevronLeft className="text-white opacity-70 group-hover:opacity-100 transition" />
+          <ChevronLeft className="text-white opacity-70 hover:opacity-100" />
         </button>
 
         <button
           onClick={goNext}
           className="
-             group flex items-center justify-center w-14 h-14 rounded-full
+            flex items-center justify-center w-14 h-14 rounded-full
             border border-white/20 backdrop-blur-sm bg-white/5
-            hover:bg-white/10 hover:border-white/40 transition-all duration-300
+            hover:bg-white/10 hover:border-white/40 transition-all
           "
         >
-          <ChevronRight className="text-white opacity-70 group-hover:opacity-100 transition" />
+          <ChevronRight className="text-white opacity-70 hover:opacity-100" />
         </button>
       </div>
     </section>
