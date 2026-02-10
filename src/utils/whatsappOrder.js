@@ -1,5 +1,5 @@
 export const openWhatsAppOrder = ({ name, phone, address, items, total }) => {
-  const adminNumber = "919876543210"; // ✅ your WhatsApp number
+  const adminNumber = "917736952028"; // ✅ your WhatsApp number
 
   const itemsText = items
     .map(

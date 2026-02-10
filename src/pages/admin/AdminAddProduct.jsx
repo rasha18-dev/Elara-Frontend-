@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api/axios";
+
 import toast from "react-hot-toast";
 
 export default function AdminAddProduct() {
@@ -51,13 +52,13 @@ export default function AdminAddProduct() {
     try {
       setUploading(true);
 
-      const { data } = await axios.post(
-        "http://localhost:5000/api/upload",
+      const { data } = await api.post(
+        "/upload",
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
+          
           },
         }
       );
@@ -76,14 +77,15 @@ export default function AdminAddProduct() {
     e.preventDefault();
 
     if (!name || !price || !weight || !description || !image || !category) {
-      return alert("Please fill all fields + upload image ✅");
+      toast.error("Please fill all fields + upload image ✅");
+      return;
     }
 
     try {
       setLoading(true);
 
-      await axios.post(
-        "http://localhost:5000/api/products",
+      await api.post(
+        "/products",
         {
           name,
           price,
