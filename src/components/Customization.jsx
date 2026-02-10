@@ -3,15 +3,15 @@ import { motion } from "framer-motion";
 
 export default function Customization() {
   return (
-    <section className="relative bg-white py-32 overflow-hidden">
+    <section className="relative bg-white py-24 md:py-32 overflow-hidden">
       {/* Background Decor */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-champagne/10 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-antiqueGold/5 rounded-full blur-[80px] pointer-events-none" />
 
       <div className="max-w-7xl mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-16 md:gap-24 items-center">
+        <div className="grid md:grid-cols-2 gap-14 md:gap-24 items-center">
 
-          {/* ✅ Image Content */}
+          {/* ✅ VIDEO COLUMN */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -21,23 +21,32 @@ export default function Customization() {
           >
             <div className="relative z-10 overflow-hidden rounded-[2px] shadow-2xl">
               <video
-  src="/customization.mp4"
-  autoPlay
-  muted
-  loop
-  playsInline
-  className="w-full h-[550px] object-cover transition-transform duration-[1.5s] ease-out hover:scale-105"
-></video>
+                src="/customization.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                className="
+                  w-full
+                  h-[260px] sm:h-[380px] md:h-[550px]
+                  object-cover
+                  transition-transform
+                  duration-[1.5s]
+                  ease-out
+                  md:hover:scale-105
+                "
+              />
 
               {/* Overlay Gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-80" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-70 md:opacity-80" />
             </div>
 
-            {/* Offset Border Decoration */}
+            {/* Offset Border Decoration (desktop only) */}
             <div className="absolute top-8 -left-8 w-full h-full border border-antiqueGold/30 z-0 hidden md:block" />
           </motion.div>
 
-          {/* ✅ Text Content */}
+          {/* ✅ TEXT COLUMN */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -48,6 +57,7 @@ export default function Customization() {
             <span className="text-antiqueGold text-xs font-bold tracking-[0.25em] uppercase mb-4 block">
               Bespoke Service
             </span>
+
             <h2 className="text-4xl md:text-5xl font-luxury text-richBlack mb-6 leading-tight">
               Designed by You, <br />
               <span className="italic text-antiqueGold">Crafted by Us</span>
@@ -66,7 +76,7 @@ export default function Customization() {
                 "Personalized Consultation",
                 "Handpicked Gemstones",
                 "3D Design Preview",
-                "Handcrafted Perfection"
+                "Handcrafted Perfection",
               ].map((item, i) => (
                 <li key={i} className="flex items-center text-richBlack/80 font-medium">
                   <div className="w-1.5 h-1.5 rounded-full bg-antiqueGold mr-4" />
