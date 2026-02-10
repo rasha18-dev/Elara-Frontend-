@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../api/axios";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -26,7 +26,7 @@ export default function AdminProducts() {
   const fetchProducts = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("http://localhost:5000/api/products");
+      const res = await api.get("/products");
       setProducts(res.data);
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch products ❌");
@@ -42,8 +42,8 @@ export default function AdminProducts() {
   // ✅ Update Stock
   const updateStock = async (id, newStock) => {
     try {
-      await axios.put(
-        `http://localhost:5000/api/products/${id}`,
+      await api.put(
+        `/products/${id}`,
         { countInStock: Number(newStock) },
         {
           headers: {
@@ -70,7 +70,7 @@ export default function AdminProducts() {
     try {
       setLoading(true);
 
-      await axios.delete(`http://localhost:5000/api/products/${id}`, {
+      await api.delete(`/products/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

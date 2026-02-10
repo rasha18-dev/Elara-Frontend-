@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 import { toast } from "react-toastify";
 
 export default function AdminOrders() {
@@ -17,7 +17,7 @@ export default function AdminOrders() {
     try {
       setLoading(true);
 
-      const { data } = await axios.get("http://localhost:5000/api/orders", {
+      const { data } = await api.get("/orders", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -32,8 +32,8 @@ export default function AdminOrders() {
   // ✅ Mark Delivered
   const markDeliveredHandler = async (orderId) => {
     try {
-      await axios.put(
-        `http://localhost:5000/api/orders/${orderId}/deliver`,
+      await api.put(
+        `/orders/${orderId}/deliver`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );

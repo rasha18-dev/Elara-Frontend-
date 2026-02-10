@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
+import api from "../../api/axios";
 import toast from "react-hot-toast";
 
 export default function AdminEditProduct() {
@@ -50,9 +50,7 @@ export default function AdminEditProduct() {
       try {
         setLoading(true);
 
-        const { data } = await axios.get(
-          `http://localhost:5000/api/products/${id}`
-        );
+        const { data } = await api.get(`/products/${id}`);
         
 
 
@@ -87,13 +85,13 @@ export default function AdminEditProduct() {
       setUploading(true);
       toast.loading("Uploading image...", { id: "upload" });
 
-      const { data } = await axios.post(
-        "http://localhost:5000/api/upload",
+      const { data } = await api.post(
+        "/upload",
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
+           
           },
         }
       );
@@ -123,8 +121,8 @@ export default function AdminEditProduct() {
       setUpdating(true);
       toast.loading("Updating product...", { id: "update" });
 
-      await axios.put(
-        `http://localhost:5000/api/products/${id}`,
+      await api.put(
+        `/products/${id}`,
         {
           name,
           price,

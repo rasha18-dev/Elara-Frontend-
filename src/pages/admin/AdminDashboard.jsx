@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../../api/axios";
 import { Link } from "react-router-dom";
 import toast from "react-hot-toast";
 export default function AdminDashboard() {
@@ -22,7 +22,7 @@ export default function AdminDashboard() {
         if (!token) return alert("Token missing. Please login again.");
 
         // ✅ fetch products
-        const productsRes = await axios.get("http://localhost:5000/api/products");
+        const productsRes = await api.get("/products");
 
         const products = productsRes.data || [];
         setProductsCount(products.length);
@@ -32,7 +32,7 @@ export default function AdminDashboard() {
         setLowStockCount(lowStock.length);
 
         // ✅ fetch orders (admin only)
-        const ordersRes = await axios.get("http://localhost:5000/api/orders", {
+        const ordersRes = await api.get("/orders", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
