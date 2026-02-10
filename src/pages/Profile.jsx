@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
+import api from "../api/axios";
 import { toast } from "react-toastify";
 import { User, Mail, Lock, LogOut, ShoppingBag, Store } from "lucide-react";
 
@@ -82,8 +82,8 @@ export default function Profile() {
         payload.newPassword = newPassword;
       }
 
-      const { data } = await axios.put(
-        "http://localhost:5000/api/users/profile",
+      const { data } = await api.put(
+        "/profile",
         payload,
         {
           headers: {

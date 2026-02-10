@@ -23,7 +23,7 @@ export default function Testimonials() {
   ];
 
   return (
-    <section className="bg-white py-24">
+    <section className="bg-white py-14">
       <div className="max-w-7xl mx-auto px-6">
         {/* ✅ Section Header */}
         <div className="text-center mb-16 animate-fadeUp">

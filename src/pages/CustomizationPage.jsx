@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 import { toast } from "react-toastify";
 import { isValidPhone } from "../utils/validators";
 export default function CustomizationPage() {
@@ -35,8 +35,8 @@ export default function CustomizationPage() {
     try {
       setUploading(true);
 
-      const { data } = await axios.post(
-        "http://localhost:5000/api/upload",
+      const { data } = await api.post(
+        "/upload",
         formData,
         {
           headers: {

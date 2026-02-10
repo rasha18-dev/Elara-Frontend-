@@ -60,7 +60,7 @@ export default function SectionLatest() {
   }, []);
 
   return (
-    <section className="bg-softGray py-32" ref={sectionRef}>
+    <section className="bg-softGray py-14" ref={sectionRef}>
       <div className="max-w-7xl mx-auto px-6">
         {/* HEADER */}
         <div

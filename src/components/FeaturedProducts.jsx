@@ -36,7 +36,7 @@ export default function FeaturedProducts() {
   };
 
   return (
-    <section className="relative bg-ivory py-32 overflow-hidden">
+    <section className="relative bg-ivory py-14 overflow-hidden">
       {/* ✅ Background glow design */}
       <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-white/80 to-transparent pointer-events-none" />
       <div className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full bg-antiqueGold/5 blur-[120px]" />

@@ -20,11 +20,15 @@ export default function Customization() {
             className="relative"
           >
             <div className="relative z-10 overflow-hidden rounded-[2px] shadow-2xl">
-              <img
-                src="/custmm.jpg"
-                alt="Custom Jewellery Design"
-                className="w-full h-[550px] object-cover transition-transform duration-[1.5s] ease-out hover:scale-105"
-              />
+              <video
+  src="/customization.mp4"
+  autoPlay
+  muted
+  loop
+  playsInline
+  className="w-full h-[550px] object-cover transition-transform duration-[1.5s] ease-out hover:scale-105"
+></video>
+
               {/* Overlay Gradient */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-80" />
             </div>
