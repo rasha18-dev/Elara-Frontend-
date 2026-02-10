@@ -12,7 +12,7 @@ const slides = [
     tag: "Gold Collection",
   },
   {
-    image: "/newban.jpeg",
+    image: "/39860.jpg.jpeg",
     title: "Brilliant Diamond Collection",
     description:
       "Shine with confidence through our handpicked diamond masterpieces.",
