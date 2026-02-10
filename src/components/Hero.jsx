@@ -4,22 +4,23 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const slides = [
   {
-    image: "/womens.jpeg",
-    title: "Timeless Gold\nJewellery",
+    image: "/bridal.jpg",
+  
+    title: "Timeless Golden Jewellery",
     description:
       "Crafted with purity and elegance, our gold collection defines luxury.",
     tag: "Gold Collection",
   },
   {
-    image: "/nxt.jpeg",
-    title: "Brilliant Diamond\nCollection",
+    image: "/newban.jpeg",
+    title: "Brilliant Diamond Collection",
     description:
       "Shine with confidence through our handpicked diamond masterpieces.",
     tag: "Diamond Collection",
   },
   {
-    image: "/bridal.jpg",
-    title: "Elegant Bridal\nJewellery",
+    image: "/womens.jpeg",
+    title: "Elegant Bridal Jewellery",
     description:
       "Celebrate your special moments with timeless bridal designs.",
     tag: "Bridal Collection",
